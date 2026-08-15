@@ -2,7 +2,7 @@ const educationalResources = [
     {
         "id": 0,
         "title": "Ans Grade 1 Calc Sheet E",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-e"
@@ -58,7 +58,7 @@ const educationalResources = [
     {
         "id": 11,
         "title": "Grade 1 Non Calc Sheet D",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-d"
@@ -66,7 +66,7 @@ const educationalResources = [
     {
         "id": 12,
         "title": "Questions Bidmas Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Bidmas",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/bidmas/questions-bidmas-past-paper-questions"
@@ -74,7 +74,7 @@ const educationalResources = [
     {
         "id": 13,
         "title": "Ans Grade 1 Calc Sheet B",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-b"
@@ -82,7 +82,7 @@ const educationalResources = [
     {
         "id": 15,
         "title": "As Ordering Fdp Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Ordering Fdp",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/ordering-fdp/as-ordering-fdp-pp"
@@ -90,7 +90,7 @@ const educationalResources = [
     {
         "id": 17,
         "title": "Grade 1 Calc Sheet A",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-a"
@@ -106,7 +106,7 @@ const educationalResources = [
     {
         "id": 21,
         "title": "As Negative Numbers Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Negative Numbers",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/negative-numbers/as-negative-numbers-pp"
@@ -114,7 +114,7 @@ const educationalResources = [
     {
         "id": 25,
         "title": "Grade 1 Non Calc Sheet C",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-c"
@@ -122,7 +122,7 @@ const educationalResources = [
     {
         "id": 27,
         "title": "Grade 1 Calc Sheet F",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-f"
@@ -130,7 +130,7 @@ const educationalResources = [
     {
         "id": 28,
         "title": "Ans Grade 1 Calc Sheet H",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-h"
@@ -138,7 +138,7 @@ const educationalResources = [
     {
         "id": 29,
         "title": "Qs Four Operations Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Four Operations",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/four-operations/qs-four-operations-pp"
@@ -146,23 +146,23 @@ const educationalResources = [
     {
         "id": 30,
         "title": "Answers Coordinates Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Coordinates",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/coordinates/answers-coordinates-past-paper-questions"
     },
     {
         "id": 33,
-        "title": "Www.Mathslinks.Co.Uk&Quot;",
+        "title": "Www.abirsacademy.pages.dev&Quot;",
         "provider": "Other",
         "topic": "General",
         "type": "Resource",
-        "url": "&quot;https://www.google.com/preferences/source?q=https://www.mathslinks.co.uk&quot;"
+        "url": "&quot;https://www.google.com/preferences/source?q=https://www.abirsacademy.pages.dev&quot;"
     },
     {
         "id": 35,
         "title": "Qs Ordering Fdp Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Ordering Fdp",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/ordering-fdp/qs-ordering-fdp-pp"
@@ -170,7 +170,7 @@ const educationalResources = [
     {
         "id": 38,
         "title": "Ans Grade 1 Calc Sheet C",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-c"
@@ -178,7 +178,7 @@ const educationalResources = [
     {
         "id": 41,
         "title": "Ans Four Operations Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Four Operations",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/four-operations/ans-four-operations-pp"
@@ -186,7 +186,7 @@ const educationalResources = [
     {
         "id": 42,
         "title": "Ans Grade 1 Non Calc Sheet A",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-a"
@@ -218,7 +218,7 @@ const educationalResources = [
     {
         "id": 49,
         "title": "Qs Negative Numbers Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Negative Numbers",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/negative-numbers/qs-negative-numbers-pp"
@@ -234,7 +234,7 @@ const educationalResources = [
     {
         "id": 52,
         "title": "Ans 3D Shapes Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "3D Shapes",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/3d-shapes/ans-3d-shapes-pp"
@@ -242,7 +242,7 @@ const educationalResources = [
     {
         "id": 53,
         "title": "Answers Factors Multiples And Primes Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Factors Multiples And Primes",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/factors-multiples-and-primes/answers-factors-multiples-and-primes-past-paper-questions"
@@ -250,7 +250,7 @@ const educationalResources = [
     {
         "id": 56,
         "title": "Ans Grade 1 Non Calc Sheet C",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-c"
@@ -258,7 +258,7 @@ const educationalResources = [
     {
         "id": 60,
         "title": "Ans Grade 1 Calc Sheet F",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-f"
@@ -282,7 +282,7 @@ const educationalResources = [
     {
         "id": 64,
         "title": "Questions Place Value Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Place Value",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/place-value/questions-place-value-past-paper-questions"
@@ -290,7 +290,7 @@ const educationalResources = [
     {
         "id": 70,
         "title": "Questions Factors Multiples And Primes Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Factors Multiples And Primes",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/factors-multiples-and-primes/questions-factors-multiples-and-primes-past-paper-questions"
@@ -306,7 +306,7 @@ const educationalResources = [
     {
         "id": 72,
         "title": "Answers Powers And Roots Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Powers And Roots",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/powers-and-roots/answers-powers-and-roots-past-paper-questions"
@@ -322,7 +322,7 @@ const educationalResources = [
     {
         "id": 76,
         "title": "Answers Place Value Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Place Value",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/place-value/answers-place-value-past-paper-questions"
@@ -330,7 +330,7 @@ const educationalResources = [
     {
         "id": 77,
         "title": "Grade 1 Non Calc Sheet A",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-a"
@@ -346,7 +346,7 @@ const educationalResources = [
     {
         "id": 79,
         "title": "Questions Coordinates Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Coordinates",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/coordinates/questions-coordinates-past-paper-questions"
@@ -354,7 +354,7 @@ const educationalResources = [
     {
         "id": 80,
         "title": "Questions Pictogram Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Pictograms",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/pictograms/questions-pictogram-past-paper-questions"
@@ -362,23 +362,23 @@ const educationalResources = [
     {
         "id": 83,
         "title": "Answers Pictogram Past Paper Questions Solutions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Pictograms",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/pictograms/answers-pictogram-past-paper-questions-solutions"
     },
     {
         "id": 84,
-        "title": "Mathslinks",
+        "title": "abirsacademy",
         "provider": "Other",
         "topic": "General",
         "type": "Resource",
-        "url": "https://ko-fi.com/mathslinks"
+        "url": "https://ko-fi.com/abirsacademy"
     },
     {
         "id": 85,
         "title": "Grade 1 Calc Sheet D",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-d"
@@ -386,7 +386,7 @@ const educationalResources = [
     {
         "id": 86,
         "title": "Qs Rounding Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Rounding",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/rounding/qs-rounding-pp"
@@ -394,7 +394,7 @@ const educationalResources = [
     {
         "id": 87,
         "title": "Grade 1 Calc Sheet E",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-e"
@@ -410,7 +410,7 @@ const educationalResources = [
     {
         "id": 89,
         "title": "Ans Grade 1 Calc Sheet A",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-a"
@@ -418,7 +418,7 @@ const educationalResources = [
     {
         "id": 91,
         "title": "Www.Kennethstafford.Co.Uk",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Resource",
         "url": "http://www.kennethstafford.co.uk"
@@ -426,7 +426,7 @@ const educationalResources = [
     {
         "id": 92,
         "title": "Ans Grade 1 Non Calc Sheet D",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-d"
@@ -450,7 +450,7 @@ const educationalResources = [
     {
         "id": 95,
         "title": "Questions Time Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Time",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/time/questions-time-past-paper-questions"
@@ -458,7 +458,7 @@ const educationalResources = [
     {
         "id": 96,
         "title": "Grade 1 Calc Sheet B",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-b"
@@ -466,7 +466,7 @@ const educationalResources = [
     {
         "id": 97,
         "title": "Grade 1 Calc Sheet H",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-h"
@@ -474,7 +474,7 @@ const educationalResources = [
     {
         "id": 98,
         "title": "Qs 3D Shapes Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "3D Shapes",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/3d-shapes/qs-3d-shapes-pp"
@@ -490,7 +490,7 @@ const educationalResources = [
     {
         "id": 100,
         "title": "Grade 1 Calc Sheet C",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-c"
@@ -498,7 +498,7 @@ const educationalResources = [
     {
         "id": 102,
         "title": "Answers Time Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Time",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/time/answers-time-past-paper-questions"
@@ -514,7 +514,7 @@ const educationalResources = [
     {
         "id": 106,
         "title": "As Rounding Pp",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Rounding",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/rounding/as-rounding-pp"
@@ -522,7 +522,7 @@ const educationalResources = [
     {
         "id": 110,
         "title": "Questions Powers And Roots Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Powers And Roots",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/powers-and-roots/questions-powers-and-roots-past-paper-questions"
@@ -530,7 +530,7 @@ const educationalResources = [
     {
         "id": 114,
         "title": "Grade 1 Non Calc Sheet B",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-b"
@@ -538,7 +538,7 @@ const educationalResources = [
     {
         "id": 115,
         "title": "Ans Grade 1 Calc Sheet D",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-d"
@@ -554,7 +554,7 @@ const educationalResources = [
     {
         "id": 118,
         "title": "Grade 1 Calc Sheet G",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Questions",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-g"
@@ -562,7 +562,7 @@ const educationalResources = [
     {
         "id": 121,
         "title": "Ans Grade 1 Non Calc Sheet B",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-b"
@@ -586,7 +586,7 @@ const educationalResources = [
     {
         "id": 125,
         "title": "Answers Bidmas Past Paper Questions",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "Bidmas",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/bidmas/answers-bidmas-past-paper-questions"
@@ -594,7 +594,7 @@ const educationalResources = [
     {
         "id": 126,
         "title": "Ans Grade 1 Calc Sheet G",
-        "provider": "Kenneth Stafford",
+        "provider": "Abir's Academy",
         "topic": "General",
         "type": "Answers",
         "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-g"

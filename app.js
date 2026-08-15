@@ -4,64 +4,64 @@ const resources = [
     category: "topic",
     tag: "Foundation → Higher",
     description: "Browse a broad, grade-organised directory of question sets, answers, videos and guides.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/gcse-questions-by-topic"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/gcse-questions-by-topic"
   },
   {
     title: "Search the resource finder",
     category: "topic",
     tag: "Search tool",
-    description: "Search the Maths Links catalogue by topic or approximate GCSE grade.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/resource-finder"
+    description: "Search the Abir's Academy catalogue by topic or approximate GCSE grade.",
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/resource-finder"
   },
   {
     title: "Build a revision pack",
     category: "practice",
     tag: "Planning tool",
     description: "Select several topics and organise links into a focused revision route.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/resource-organiser"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/resource-organiser"
   },
   {
     title: "Interleaving practice",
     category: "practice",
     tag: "Mixed practice",
     description: "Switch between topics to practise recognising which mathematical method is needed.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/interleaving-resources"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/interleaving-resources"
   },
   {
     title: "GCSE past-paper routes",
     category: "exam",
     tag: "Exam prep",
     description: "Find past-paper routes for Edexcel, AQA, OCR, Eduqas and IGCSE qualifications.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/past-papers"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/past-papers"
   },
   {
     title: "Practice papers",
     category: "exam",
     tag: "Timed practice",
     description: "Open the original publisher page for practice papers and worked solutions.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/practice-papers"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/practice-papers"
   },
   {
     title: "Topic quizzes",
     category: "practice",
     tag: "Quick check",
     description: "Use short, self-marking quizzes to check understanding before deeper practice.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/maths-quizzes"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/maths-quizzes"
   },
   {
-    title: "How to use Maths Links",
+    title: "How to use Abir's Academy",
     category: "topic",
     tag: "Study guide",
     description: "Read the creator’s own guidance for combining topic work, past papers and interleaving.",
-    source: "Maths Links · Kenneth Stafford",
-    url: "https://www.mathslinks.co.uk/how-to-use-mathslinks"
+    source: "Abir's Academy · Abir's Academy",
+    url: "https://www.abirsacademy.pages.dev/how-to-use-abirsacademy"
   },
   {
     title: "Desmos graphing calculator",
