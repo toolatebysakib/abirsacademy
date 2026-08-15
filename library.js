@@ -5654,8 +5654,8 @@ function render() {
               <p>${safeText(resource.subject)} &bull; ${safeText(resource.board)}</p>
             </div>
             <div class="row-actions button-group">
-              ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="open-resource-btn button button-outline" data-url="${resource.worksheet_url}" data-target="worksheet">Worksheet</a>` : ''}
-              ${hasSolution ? `<a href="${resource.solution_url}" class="open-resource-btn button button-outline" data-url="${resource.solution_url}" data-target="solution">Solution</a>` : ''}
+              ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="button button-outline" target="_blank">Worksheet</a>` : ''}
+              ${hasSolution ? `<a href="${resource.solution_url}" class="button button-outline" target="_blank">Solution</a>` : ''}
             </div>
           </div>`;
       });
@@ -5687,7 +5687,7 @@ function render() {
   });
   
   // Attach modal listeners after render
-  attachModalListeners();
+  
 }
 
 function updateActiveFilter(buttons, activeValue, dataAttr) {
@@ -5714,10 +5714,25 @@ subjectFilters.forEach((button) => {
 routeButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const route = button.getAttribute("data-route");
-    if(route.startsWith("grade-")) setGradeFilter(route);
+    if(route.startsWith("grade-")) {
+        setGradeFilter("all"); // clear filter first to show all headers
+        setTimeout(() => {
+            const h2s = document.querySelectorAll('.grade-heading');
+            let targetGrade = route.replace('grade-', '');
+            for(let h of h2s) {
+                if(h.innerText.includes('Grade ' + targetGrade)) {
+                    // Scroll so the heading is nicely below the top nav
+                    const y = h.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({top: y, behavior: 'smooth'});
+                    break;
+                }
+            }
+        }, 50);
+    }
     search.value = "";
     savedOnly = false;
-    document.getElementById("library-browser").scrollIntoView({ behavior: "smooth" });
+  });
+});
   });
 });
 
@@ -5779,101 +5794,3 @@ const observer = new IntersectionObserver((entries, revealObserver) => entries.f
 document.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => observer.observe(item));
 document.querySelector("[data-year]").textContent = new Date().getFullYear();
 
-// Viewer logic
-let currentWorksheetUrl = "";
-let currentSolutionUrl = "";
-
-function openResource(worksheetUrl, solutionUrl, defaultTarget) {
-    const modal = document.getElementById('pdf-viewer-modal');
-    const iframe = document.getElementById('pdf-viewer-iframe');
-    const body = document.body;
-    
-    currentWorksheetUrl = worksheetUrl;
-    currentSolutionUrl = solutionUrl;
-    
-    const wsBtn = document.getElementById('toggle-worksheet-btn');
-    const solBtn = document.getElementById('toggle-solution-btn');
-    
-    // Toggle button visibility based on availability
-    wsBtn.style.display = worksheetUrl ? 'inline-block' : 'none';
-    solBtn.style.display = solutionUrl ? 'inline-block' : 'none';
-    
-    if (defaultTarget === 'solution' && solutionUrl) {
-        iframe.src = solutionUrl;
-        wsBtn.classList.remove('active');
-        solBtn.classList.add('active');
-    } else {
-        iframe.src = worksheetUrl;
-        wsBtn.classList.add('active');
-        solBtn.classList.remove('active');
-    }
-    
-    modal.classList.remove('hidden');
-    body.classList.add('modal-open');
-}
-
-function attachModalListeners() {
-    const buttons = document.querySelectorAll('.open-resource-btn');
-    buttons.forEach(btn => {
-        // Prevent duplicate attachments
-        if(btn.dataset.listenerAttached) return;
-        btn.dataset.listenerAttached = "true";
-        
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Find the parent article to get BOTH urls if available
-            const article = btn.closest('.library-item');
-            let wsUrl = "";
-            let solUrl = "";
-            if (article) {
-                const wsBtn = article.querySelector('[data-target="worksheet"]');
-                const solBtn = article.querySelector('[data-target="solution"]');
-                if (wsBtn) wsUrl = wsBtn.getAttribute('data-url');
-                if (solBtn) solUrl = solBtn.getAttribute('data-url');
-            } else {
-                wsUrl = btn.getAttribute('data-url');
-            }
-            const target = btn.getAttribute('data-target');
-            
-            openResource(wsUrl, solUrl, target);
-        });
-    });
-}
-
-const toggleWsBtn = document.getElementById('toggle-worksheet-btn');
-const toggleSolBtn = document.getElementById('toggle-solution-btn');
-const iframe = document.getElementById('pdf-viewer-iframe');
-
-if (toggleWsBtn) {
-    toggleWsBtn.addEventListener('click', () => {
-        if(currentWorksheetUrl) {
-            iframe.src = currentWorksheetUrl;
-            toggleWsBtn.classList.add('active');
-            toggleSolBtn.classList.remove('active');
-        }
-    });
-}
-if (toggleSolBtn) {
-    toggleSolBtn.addEventListener('click', () => {
-        if(currentSolutionUrl) {
-            iframe.src = currentSolutionUrl;
-            toggleSolBtn.classList.add('active');
-            toggleWsBtn.classList.remove('active');
-        }
-    });
-}
-
-const closeBtn = document.getElementById('close-modal-btn');
-if(closeBtn) {
-    closeBtn.addEventListener('click', () => {
-        const modal = document.getElementById('pdf-viewer-modal');
-        const body = document.body;
-        
-        modal.classList.add('hidden');
-        body.classList.remove('modal-open');
-        iframe.src = '';
-    });
-}
-
-updateSavedUI();
-render();
