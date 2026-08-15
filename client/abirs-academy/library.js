@@ -10110,7 +10110,165 @@ const libraryResources = [
   },
 ];
 
+const grid = document.querySelector("[data-library-grid]");
+const search = document.querySelector("[data-library-search]");
+const sort = document.querySelector("[data-sort]");
+const filters = [...document.querySelectorAll("[data-library-filter]")];
+const routeButtons = [...document.querySelectorAll("[data-route]")];
+const savedFilter = document.querySelector("[data-saved-filter]");
+const resultCount = document.querySelector("[data-results-count]");
+const empty = document.querySelector("[data-library-empty]");
+const clearButtons = [...document.querySelectorAll("[data-clear-filters], [data-empty-clear]")];
+const toast = document.querySelector("[data-saved-toast]");
+let collection = "all";
+let savedOnly = false;
+let saved;
+try {
+  const storedRoutes = JSON.parse(localStorage.getItem("abirs-academy-saved") || "[]");
+  saved = new Set(Array.isArray(storedRoutes) ? storedRoutes : []);
+} catch {
+  saved = new Set();
+}
+let toastTimer;
 
+const collectionNames = {
+  start: "Start here", learn: "Learn", practice: "Practice", exams: "Exam prep",
+  tools: "Tool", providers: "Provider"
+};
+
+function safeText(value) {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#039;", '"': "&quot;"
+  })[character]);
+}
+
+function updateSavedUI() {
+  document.querySelector("[data-saved-count]").textContent = saved.size;
+  savedFilter.setAttribute("aria-pressed", String(savedOnly));
+}
+
+function showToast(message) {
+  clearTimeout(toastTimer);
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 1800);
+}
+
+function visibleResources() {
+  const query = search.value.trim().toLowerCase();
+  let items = libraryResources.filter((resource) => {
+    const matchesCollection = collection === "all" || resource.collection === collection;
+    const matchesSaved = !savedOnly || saved.has(resource.id);
+    const searchable = `${resource.title} ${resource.description} ${resource.type} ${resource.level} ${resource.source}`.toLowerCase();
+    return matchesCollection && matchesSaved && searchable.includes(query);
+  });
+  if (sort.value === "az") items.sort((a, b) => a.title.localeCompare(b.title));
+  if (sort.value === "source") items.sort((a, b) => a.source.localeCompare(b.source) || a.title.localeCompare(b.title));
+  if (sort.value === "recommended") items.sort((a, b) => a.priority - b.priority);
+  return items;
+}
+
+function render() {
+  const items = visibleResources();
+  resultCount.textContent = items.length;
+  empty.hidden = items.length > 0;
+  grid.hidden = items.length === 0;
+  document.querySelector("[data-clear-filters]").hidden = collection === "all" && !savedOnly && !search.value;
+  grid.innerHTML = items.map((resource) => {
+    const isSaved = saved.has(resource.id);
+    return `
+      <article class="library-item">
+        <div class="library-item-top">
+          <span class="library-item-type">${safeText(collectionNames[resource.collection])}</span>
+          <button class="save-button${isSaved ? " is-saved" : ""}" type="button" data-save="${resource.id}" aria-pressed="${isSaved}" aria-label="${isSaved ? "Remove" : "Save"} ${safeText(resource.title)}">${isSaved ? "★" : "☆"}</button>
+        </div>
+        <h3>${safeText(resource.title)}</h3>
+        <p>${safeText(resource.description)}</p>
+        <div class="item-meta"><span>${safeText(resource.type)}</span><span>${safeText(resource.level)}</span></div>
+        <div class="item-bottom">
+          <small>${safeText(resource.source)}</small>
+          <a href="${resource.url}" target="_blank" rel="noopener noreferrer">Open source <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>`;
+  }).join("");
+  grid.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", toggleSaved));
+  updateSavedUI();
+}
+
+function toggleSaved(event) {
+  const id = event.currentTarget.dataset.save;
+  const resource = libraryResources.find((item) => item.id === id);
+  if (saved.has(id)) {
+    saved.delete(id);
+    showToast(`Removed “${resource.title}” from saved routes`);
+  } else {
+    saved.add(id);
+    showToast(`Saved “${resource.title}” on this device`);
+  }
+  localStorage.setItem("abirs-academy-saved", JSON.stringify([...saved]));
+  render();
+}
+
+function setCollection(nextCollection, shouldScroll = false) {
+  collection = nextCollection;
+  savedOnly = false;
+  filters.forEach((button) => button.classList.toggle("is-active", button.dataset.libraryFilter === collection));
+  render();
+  if (shouldScroll) document.querySelector("#library-browser").scrollIntoView({ behavior: "smooth" });
+}
+
+filters.forEach((button) => button.addEventListener("click", () => setCollection(button.dataset.libraryFilter)));
+routeButtons.forEach((button) => button.addEventListener("click", () => setCollection(button.dataset.route, true)));
+search.addEventListener("input", render);
+sort.addEventListener("change", render);
+savedFilter.addEventListener("click", () => { savedOnly = !savedOnly; render(); });
+clearButtons.forEach((button) => button.addEventListener("click", () => {
+  search.value = "";
+  savedOnly = false;
+  setCollection("all");
+}));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "/" && document.activeElement !== search) {
+    event.preventDefault();
+    search.focus();
+  }
+});
+
+document.querySelector("[data-total-count]").textContent = libraryResources.length;
+document.querySelector("[data-count-for='all']").textContent = libraryResources.length;
+["start", "learn", "practice", "exams", "tools", "providers"].forEach((name) => {
+  document.querySelector(`[data-count-for='${name}']`).textContent = libraryResources.filter((item) => item.collection === name).length;
+});
+
+const menuToggle = document.querySelector("[data-menu-toggle]");
+const nav = document.querySelector("[data-nav]");
+menuToggle.addEventListener("click", () => {
+  const open = menuToggle.getAttribute("aria-expanded") !== "true";
+  menuToggle.setAttribute("aria-expanded", String(open));
+  nav.classList.toggle("is-open", open);
+  document.body.classList.toggle("menu-open", open);
+});
+nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
+  menuToggle.setAttribute("aria-expanded", "false");
+  nav.classList.remove("is-open");
+  document.body.classList.remove("menu-open");
+}));
+
+const header = document.querySelector("[data-header]");
+const updateHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 12);
+window.addEventListener("scroll", updateHeader, { passive: true });
+updateHeader();
+
+const observer = new IntersectionObserver((entries, revealObserver) => entries.forEach((entry) => {
+  if (entry.isIntersecting) {
+    entry.target.classList.add("is-visible");
+    revealObserver.unobserve(entry.target);
+  }
+}), { threshold: .12 });
+document.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => observer.observe(item));
+document.querySelector("[data-year]").textContent = new Date().getFullYear();
+updateSavedUI();
+render();
 
 
 // Viewer logic
