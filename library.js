@@ -5618,27 +5618,51 @@ function render() {
   const hasActiveFilters = filterGrade !== "all" || filterTier !== "all" || filterSubject !== "all" || savedOnly || search.value;
   document.querySelector("[data-clear-filters]").hidden = !hasActiveFilters;
   
-  grid.innerHTML = items.map((resource) => {
-    const isSaved = saved.has(resource.id);
-    const hasWorksheet = !!resource.worksheet_url;
-    const hasSolution = !!resource.solution_url;
-    
-    return `
-      <article class="library-item">
-        <div class="library-item-top">
-          <span class="library-item-type">Grade ${resource.grade} | ${safeText(resource.tier)}</span>
-          <button class="save-button${isSaved ? " is-saved" : ""}" type="button" data-save="${resource.id}" aria-pressed="${isSaved}" aria-label="${isSaved ? "Remove" : "Save"} ${safeText(resource.title)}">${isSaved ? "★" : "☆"}</button>
-        </div>
-        <h3>${safeText(resource.title)}</h3>
-        <p>${safeText(resource.description)}</p>
-        <div class="item-meta"><span>${safeText(resource.subject)}</span><span>${safeText(resource.board)}</span></div>
-        <div class="button-group" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-          ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="open-resource-btn button button-outline" data-url="${resource.worksheet_url}" data-target="worksheet">Worksheet</a>` : ''}
-          ${hasSolution ? `<a href="${resource.solution_url}" class="open-resource-btn button button-outline" data-url="${resource.solution_url}" data-target="solution">Solution</a>` : ''}
-        </div>
-      </article>
-    `;
-  }).join("");
+  // Group by grade
+  const grouped = {};
+  items.forEach(item => {
+      const g = item.grade;
+      if(!grouped[g]) grouped[g] = [];
+      grouped[g].push(item);
+  });
+  
+  const sortedGrades = Object.keys(grouped).sort((a,b) => parseInt(a) - parseInt(b));
+  
+  grid.innerHTML = "";
+  
+  grid.style.display = "block"; // override the grid display to stack sections
+  
+  sortedGrades.forEach(g => {
+      const gradeItems = grouped[g];
+      const tierLabel = parseInt(g) <= 5 ? "Foundation" : "Higher";
+      
+      let html = `<div class="grade-section">
+          <h2 class="grade-heading">Grade ${g} <span>${tierLabel}</span></h2>
+          <div class="grade-list">`;
+          
+      gradeItems.forEach(resource => {
+          const isSaved = saved.has(resource.id);
+          const hasWorksheet = !!resource.worksheet_url;
+          const hasSolution = !!resource.solution_url;
+          
+          html += `
+          <div class="library-item-row">
+            <div class="row-info">
+              <h3>${safeText(resource.title)}
+                <button style="border:none;background:none;cursor:pointer;font-size:1.1rem;margin-left:8px;" class="save-button${isSaved ? " is-saved" : ""}" type="button" data-save="${resource.id}" aria-pressed="${isSaved}" aria-label="${isSaved ? "Remove" : "Save"} ${safeText(resource.title)}">${isSaved ? "★" : "☆"}</button>
+              </h3>
+              <p>${safeText(resource.subject)} &bull; ${safeText(resource.board)}</p>
+            </div>
+            <div class="row-actions button-group">
+              ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="open-resource-btn button button-outline" data-url="${resource.worksheet_url}" data-target="worksheet">Worksheet</a>` : ''}
+              ${hasSolution ? `<a href="${resource.solution_url}" class="open-resource-btn button button-outline" data-url="${resource.solution_url}" data-target="solution">Solution</a>` : ''}
+            </div>
+          </div>`;
+      });
+      
+      html += `</div></div>`;
+      grid.innerHTML += html;
+  });
 
   grid.querySelectorAll("[data-save]").forEach((button) => {
     button.addEventListener("click", () => {

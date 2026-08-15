@@ -292,3 +292,61 @@
     color: #555;
 }
 .close-btn:hover { color: #000; }
+
+/* Maths Genie Style Organization */
+.grade-section {
+    margin-bottom: 3rem;
+    width: 100%;
+}
+.grade-heading {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--lime);
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+.grade-heading span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(0,0,0,0.5);
+}
+.grade-list {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+.library-item-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background 0.2s;
+}
+.library-item-row:last-child {
+    border-bottom: none;
+}
+.library-item-row:hover {
+    background: #f8faf9;
+}
+.row-info h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.1rem;
+    color: var(--ink);
+}
+.row-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+.row-actions {
+    display: flex;
+    gap: 0.75rem;
+}
