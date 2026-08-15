@@ -1,210 +1,903 @@
 const libraryResources = [
-  { id: "questions-by-topic", title: "GCSE questions by topic", collection: "start", type: "Topic directory", level: "Grades 1–9", source: "Maths Links", description: "Begin with a topic and open the original directory of questions, answers, videos and one-page guides.", url: "https://www.mathslinks.co.uk/gcse-questions-by-topic", priority: 1 },
-  { id: "resource-finder", title: "Resource finder", collection: "start", type: "Search tool", level: "All GCSE", source: "Maths Links", description: "Search the original catalogue by topic or approximate grade when you already know the gap to work on.", url: "https://www.mathslinks.co.uk/resource-finder", priority: 2 },
-  { id: "resource-organiser", title: "Resource organiser", collection: "start", type: "Planning tool", level: "All GCSE", source: "Maths Links", description: "Choose several topics and assemble a more focused set of resource links for later study.", url: "https://www.mathslinks.co.uk/resource-organiser", priority: 3 },
-  { id: "how-to-use", title: "How to use Maths Links", collection: "start", type: "Study guide", level: "All learners", source: "Maths Links", description: "Read the directory creator’s suggested routes through topic questions, past papers and mixed practice.", url: "https://www.mathslinks.co.uk/how-to-use-mathslinks", priority: 4 },
-
-  { id: "gcse-course", title: "GCSE maths course", collection: "learn", type: "Course", level: "GCSE", source: "Maths Links", description: "Follow focused lessons on high-value crossover ideas that appear across the major exam boards.", url: "https://www.mathslinks.co.uk/gcse-maths-course", priority: 10 },
-  { id: "grade-one", title: "Grade 1 questions", collection: "learn", type: "Foundation", level: "Grade 1", source: "Maths Links", description: "Start with accessible foundation questions and routes for building secure mathematical basics.", url: "https://www.mathslinks.co.uk/worksheets/grade-1-questions", priority: 11 },
-  { id: "crossover", title: "Crossover topics", collection: "learn", type: "Topic collection", level: "Grades 4–5", source: "Maths Links", description: "Concentrate on the topics that bridge Foundation and Higher tier and often decide a grade boundary.", url: "https://www.mathslinks.co.uk/worksheets/crossover-topics", priority: 12 },
-  { id: "grade-nine", title: "Grade 9 questions", collection: "learn", type: "Higher challenge", level: "Grades 8–9", source: "Maths Links", description: "Open a collection of demanding higher-tier questions intended for top-grade preparation.", url: "https://www.mathslinks.co.uk/worksheets/grade-9-questions", priority: 13 },
-
-  { id: "interleaving", title: "Interleaving resources", collection: "practice", type: "Mixed practice", level: "Grades 1–9", source: "Maths Links", description: "Switch between topics so you practise recognising the method as well as carrying it out.", url: "https://www.mathslinks.co.uk/interleaving-resources", priority: 20 },
-  { id: "past-paper-questions", title: "Past-paper questions by topic", collection: "practice", type: "Exam questions", level: "GCSE", source: "Maths Links", description: "Practise exam-style questions grouped around a single topic before attempting complete papers.", url: "https://www.mathslinks.co.uk/past-paper-questions", priority: 21 },
-  { id: "worksheets", title: "Worksheet collections", collection: "practice", type: "Worksheet hub", level: "KS2–GCSE", source: "Maths Links", description: "Open the main route to worksheet collections, providers and grade-focused practice.", url: "https://www.mathslinks.co.uk/worksheets", priority: 22 },
-  { id: "grid-worksheets", title: "Grid worksheets", collection: "practice", type: "Printable practice", level: "Foundation", source: "Maths Links", description: "Use printable grid activities for short, repeatable practice with core number skills.", url: "https://www.mathslinks.co.uk/grids/grid-worksheets", priority: 23 },
-  { id: "ks2-worksheets", title: "KS2 SATs worksheets", collection: "practice", type: "Primary practice", level: "KS2", source: "Maths Links", description: "Find worksheet routes intended for pupils preparing for Key Stage 2 mathematics assessments.", url: "https://www.mathslinks.co.uk/worksheets/ks2-sats-worksheets", priority: 24 },
-
-  { id: "past-papers", title: "Past-paper hub", collection: "exams", type: "Exam directory", level: "GCSE", source: "Maths Links", description: "Choose an exam board and reach past papers, supporting tools and related exam resources.", url: "https://www.mathslinks.co.uk/past-papers", priority: 30 },
-  { id: "edexcel", title: "Edexcel past papers", collection: "exams", type: "Exam board", level: "Foundation & Higher", source: "Pearson / Maths Links", description: "Open the Edexcel paper route with papers, mark schemes and related preparation links.", url: "https://www.mathslinks.co.uk/past-papers/edexcel-past-papers", priority: 31 },
-  { id: "edexcel-tool", title: "Edexcel past-paper tool", collection: "exams", type: "Paper tool", level: "Foundation & Higher", source: "Maths Links", description: "Use the original interactive route for locating and working with Edexcel papers.", url: "https://www.mathslinks.co.uk/past-papers/edexcel-past-papers/edexcel-past-paper-tool", priority: 32 },
-  { id: "half-papers", title: "Half exam papers", collection: "exams", type: "Timed practice", level: "GCSE", source: "Maths Links", description: "Build exam stamina with shorter paper sets when a full paper is too large for one session.", url: "https://www.mathslinks.co.uk/past-papers/edexcel-past-papers/half-exam-papers", priority: 33 },
-  { id: "aqa", title: "AQA past papers", collection: "exams", type: "Exam board", level: "Foundation & Higher", source: "AQA / Maths Links", description: "Open the AQA paper route with papers, mark schemes and supporting preparation links.", url: "https://www.mathslinks.co.uk/past-papers/aqa-past-papers", priority: 34 },
-  { id: "aqa-tool", title: "AQA past-paper tool", collection: "exams", type: "Paper tool", level: "Foundation & Higher", source: "Maths Links", description: "Use the original tool for navigating AQA GCSE maths papers more efficiently.", url: "https://www.mathslinks.co.uk/past-papers/aqa-past-papers/aqa-past-paper-tool", priority: 35 },
-  { id: "ocr", title: "OCR past papers", collection: "exams", type: "Exam board", level: "Foundation & Higher", source: "OCR / Maths Links", description: "Open the OCR paper route and its linked assessment material at the original sources.", url: "https://www.mathslinks.co.uk/past-papers/ocr-past-papers", priority: 36 },
-  { id: "eduqas", title: "Eduqas past papers", collection: "exams", type: "Exam board", level: "Foundation & Higher", source: "Eduqas / Maths Links", description: "Open the Eduqas paper route and related board-specific preparation resources.", url: "https://www.mathslinks.co.uk/past-papers/eduqas-past-papers", priority: 37 },
-  { id: "ks2-papers", title: "KS2 SATs papers", collection: "exams", type: "National assessment", level: "KS2", source: "Maths Links", description: "Reach past Key Stage 2 mathematics papers and associated preparation material.", url: "https://www.mathslinks.co.uk/past-papers/ks2-sats-papers", priority: 38 },
-  { id: "practice-papers", title: "GCSE practice papers", collection: "exams", type: "Practice paper", level: "Foundation & Higher", source: "Kenneth Stafford", description: "Use original practice-paper sets with hints and solutions for realistic exam preparation.", url: "https://www.mathslinks.co.uk/practice-papers", priority: 39 },
-  { id: "boundaries", title: "GCSE grade boundaries", collection: "exams", type: "Exam information", level: "GCSE", source: "Exam boards / Maths Links", description: "Find routes to published grade-boundary information from the relevant exam boards.", url: "https://www.mathslinks.co.uk/gcse-grade-boundaries", priority: 40 },
-  { id: "timetable", title: "GCSE maths timetable", collection: "exams", type: "Exam information", level: "GCSE", source: "Maths Links", description: "Check the current timetable page, then confirm dates with your school and exam board.", url: "https://www.mathslinks.co.uk/2026-gcse-timetable", priority: 41 },
-  { id: "printed-papers", title: "Printed past papers", collection: "exams", type: "Print service", level: "GCSE", source: "Maths Links", description: "Review the original page for information about obtaining printed paper packs.", url: "https://www.mathslinks.co.uk/printed-past-papers", priority: 42 },
-
-  { id: "grids", title: "Interactive maths grids", collection: "tools", type: "Interactive hub", level: "Foundation", source: "Maths Links", description: "Open a set of classroom-friendly grid activities designed for quick repeated practice.", url: "https://www.mathslinks.co.uk/grids", priority: 50 },
-  { id: "four-operations", title: "Four-operations grid", collection: "tools", type: "Interactive grid", level: "Foundation", source: "Maths Links", description: "Practise addition, subtraction, multiplication and division through a flexible number grid.", url: "https://www.mathslinks.co.uk/grids/four-operations-grid", priority: 51 },
-  { id: "rounding-grid", title: "Rounding grid", collection: "tools", type: "Interactive grid", level: "Foundation", source: "Maths Links", description: "Generate short rounding prompts for mental practice, teaching or retrieval work.", url: "https://www.mathslinks.co.uk/grids/rounding-grid", priority: 52 },
-  { id: "fractions-grid", title: "Fractions grid", collection: "tools", type: "Interactive grid", level: "Foundation", source: "Maths Links", description: "Use a visual grid route for practising core fraction operations and understanding.", url: "https://www.mathslinks.co.uk/grids/fractions-grid", priority: 53 },
-  { id: "quizzes", title: "Self-marking maths quizzes", collection: "tools", type: "Quick check", level: "GCSE", source: "Maths Links", description: "Check one topic quickly with short multiple-choice quizzes that mark responses on screen.", url: "https://www.mathslinks.co.uk/maths-quizzes", priority: 54 },
-
-  { id: "maths-genie", title: "Maths Genie route", collection: "providers", type: "Resource provider", level: "GCSE", source: "Maths Genie / Maths Links", description: "Reach the directory route for Maths Genie worksheets, answers and topic resources.", url: "https://www.mathslinks.co.uk/worksheets/maths-genie", priority: 60 },
-  { id: "corbett", title: "Corbettmaths route", collection: "providers", type: "Resource provider", level: "KS3–GCSE", source: "Corbettmaths / Maths Links", description: "Reach the directory route for Corbettmaths practice, textbook exercises and answers.", url: "https://www.mathslinks.co.uk/worksheets/corbett-maths", priority: 61 },
-  { id: "five-a-day", title: "Corbett 5-a-day", collection: "providers", type: "Daily practice", level: "Numeracy–Higher", source: "Corbettmaths / Maths Links", description: "Use short daily mixed sets to maintain fluency across a range of difficulty levels.", url: "https://www.mathslinks.co.uk/worksheets/corbett-5-a-day", priority: 62 },
-  { id: "first-class", title: "1st Class Maths route", collection: "providers", type: "Resource provider", level: "GCSE", source: "1st Class Maths / Maths Links", description: "Reach topic worksheets and exam-board-specific resources from 1st Class Maths.", url: "https://www.mathslinks.co.uk/worksheets/1st-class-maths", priority: 63 },
-  { id: "metatutor", title: "Metatutor route", collection: "providers", type: "Resource provider", level: "GCSE", source: "Metatutor / Maths Links", description: "Open the Maths Links route into Metatutor’s topic-based learning resources.", url: "https://www.mathslinks.co.uk/worksheets/metatutor", priority: 64 },
-  { id: "dr-austin", title: "Dr Austin Maths route", collection: "providers", type: "Resource provider", level: "GCSE", source: "Dr Austin Maths / Maths Links", description: "Reach carefully structured worksheets covering algebra, number, geometry and statistics.", url: "https://www.mathslinks.co.uk/worksheets/dr-austin", priority: 65 },
-  { id: "maths-diy", title: "Maths DIY route", collection: "providers", type: "Resource provider", level: "GCSE", source: "Maths DIY / Maths Links", description: "Open the directory route for Maths DIY questions, answers and topic practice.", url: "https://www.mathslinks.co.uk/worksheets/maths-diy", priority: 66 },
-  { id: "m4ths", title: "M4THS.com route", collection: "providers", type: "Resource provider", level: "GCSE", source: "M4THS.com / Maths Links", description: "Reach the directory route for M4THS.com learning and practice resources.", url: "https://www.mathslinks.co.uk/worksheets/m4ths-com", priority: 67 },
-  { id: "maths-room", title: "The Maths Room route", collection: "providers", type: "Resource provider", level: "GCSE & IGCSE", source: "The Maths Room / Maths Links", description: "Open topic teaching and practice routes from The Maths Room through the original directory.", url: "https://www.mathslinks.co.uk/worksheets/the-maths-room", priority: 68 },
-  { id: "maths-takeaway", title: "Maths Takeaway route", collection: "providers", type: "Resource provider", level: "GCSE", source: "Maths Takeaway / Maths Links", description: "Reach Maths Takeaway question and answer routes while keeping the original publisher visible.", url: "https://www.mathslinks.co.uk/worksheets/maths-takeaway", priority: 69 },
-  { id: "rocket", title: "GCSE Maths Rocket route", collection: "providers", type: "Resource provider", level: "GCSE", source: "GCSE Maths Rocket / Maths Links", description: "Open focused GCSE worksheet routes from GCSE Maths Rocket through the directory.", url: "https://www.mathslinks.co.uk/worksheets/gcse-maths-rocket", priority: 70 },
-  { id: "cognito", title: "Cognito route", collection: "providers", type: "Resource provider", level: "GCSE", source: "Cognito / Maths Links", description: "Reach Cognito learning pages and topic resources from the original Maths Links route.", url: "https://www.mathslinks.co.uk/worksheets/cognito", priority: 71 }
+  {
+    id: "res-0",
+    title: "Place Value - 1G - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Place Value - 1G practice questions.",
+    url: "resources/deep_resource_6.pdf",
+    priority: 0
+  },
+  {
+    id: "res-1",
+    title: "BIDMAS - 1L - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "BIDMAS - 1L practice questions.",
+    url: "resources/deep_resource_9.pdf",
+    priority: 1
+  },
+  {
+    id: "res-2",
+    title: "Subtraction - 1B - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Subtraction - 1B practice questions.",
+    url: "resources/deep_resource_2.pdf",
+    priority: 2
+  },
+  {
+    id: "res-3",
+    title: "Coordinates - 1N - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Coordinates - 1N practice questions.",
+    url: "resources/deep_resource_11.pdf",
+    priority: 3
+  },
+  {
+    id: "res-4",
+    title: "Pictograms - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Pictograms practice questions.",
+    url: "resources/deep_resource_12.pdf",
+    priority: 4
+  },
+  {
+    id: "res-5",
+    title: "Addition - 1A - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Addition - 1A practice questions.",
+    url: "resources/deep_resource_1.pdf",
+    priority: 5
+  },
+  {
+    id: "res-6",
+    title: "Ordering FDP - 1F - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Ordering FDP - 1F practice questions.",
+    url: "resources/deep_resource_5.pdf",
+    priority: 6
+  },
+  {
+    id: "res-7",
+    title: "3D shapes - 1R - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "3D shapes - 1R practice questions.",
+    url: "resources/deep_resource_13.pdf",
+    priority: 7
+  },
+  {
+    id: "res-8",
+    title: "Angles - 2K - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Angles - 2K practice questions.",
+    url: "resources/deep_resource_20.pdf",
+    priority: 8
+  },
+  {
+    id: "res-9",
+    title: "Function machines - 2H - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Function machines - 2H practice questions.",
+    url: "resources/deep_resource_18.pdf",
+    priority: 9
+  },
+  {
+    id: "res-10",
+    title: "FDP - 2E - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "FDP - 2E practice questions.",
+    url: "resources/deep_resource_16.pdf",
+    priority: 10
+  },
+  {
+    id: "res-11",
+    title: "Factors, multiples and primes - 1M - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Factors, multiples and primes - 1M practice questions.",
+    url: "resources/deep_resource_10.pdf",
+    priority: 11
+  },
+  {
+    id: "res-12",
+    title: "Area and perimeter - 2L - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Area and perimeter - 2L practice questions.",
+    url: "resources/deep_resource_21.pdf",
+    priority: 12
+  },
+  {
+    id: "res-13",
+    title: "Probability & Probability Scale - 2N - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Probability & Probability Scale - 2N practice questions.",
+    url: "resources/deep_resource_22.pdf",
+    priority: 13
+  },
+  {
+    id: "res-14",
+    title: "Averages - 2T - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Averages - 2T practice questions.",
+    url: "resources/deep_resource_25.pdf",
+    priority: 14
+  },
+  {
+    id: "res-15",
+    title: "Writing and simplifying ratio - 3D - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Writing and simplifying ratio - 3D practice questions.",
+    url: "resources/deep_resource_29.pdf",
+    priority: 15
+  },
+  {
+    id: "res-16",
+    title: "Ratio - 3E - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Ratio - 3E practice questions.",
+    url: "resources/deep_resource_30.pdf",
+    priority: 16
+  },
+  {
+    id: "res-17",
+    title: "Operations with fractions - 3B - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Operations with fractions - 3B practice questions.",
+    url: "resources/deep_resource_27.pdf",
+    priority: 17
+  },
+  {
+    id: "res-18",
+    title: "Negative numbers - 1J - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Negative numbers - 1J practice questions.",
+    url: "resources/deep_resource_7.pdf",
+    priority: 18
+  },
+  {
+    id: "res-19",
+    title: "Systematic listing - 2C - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Systematic listing - 2C practice questions.",
+    url: "resources/deep_resource_14.pdf",
+    priority: 19
+  },
+  {
+    id: "res-20",
+    title: "Unitary method - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Unitary method practice questions.",
+    url: "resources/deep_resource_23.pdf",
+    priority: 20
+  },
+  {
+    id: "res-21",
+    title: "Conversions and units - 3K - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Conversions and units - 3K practice questions.",
+    url: "resources/deep_resource_34.pdf",
+    priority: 21
+  },
+  {
+    id: "res-22",
+    title: "Exchange rates - 3J - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Exchange rates - 3J practice questions.",
+    url: "resources/deep_resource_33.pdf",
+    priority: 22
+  },
+  {
+    id: "res-23",
+    title: "Solving linear equations - 3P - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Solving linear equations - 3P practice questions.",
+    url: "resources/deep_resource_37.pdf",
+    priority: 23
+  },
+  {
+    id: "res-24",
+    title: "Straight line graphs - 3Q - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Straight line graphs - 3Q practice questions.",
+    url: "resources/deep_resource_38.pdf",
+    priority: 24
+  },
+  {
+    id: "res-25",
+    title: "Substitution - 3N - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Substitution - 3N practice questions.",
+    url: "resources/deep_resource_36.pdf",
+    priority: 25
+  },
+  {
+    id: "res-26",
+    title: "Writing an expression - 2G - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Writing an expression - 2G practice questions.",
+    url: "resources/deep_resource_17.pdf",
+    priority: 26
+  },
+  {
+    id: "res-27",
+    title: "Error intervals - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Error intervals practice questions.",
+    url: "resources/deep_resource_26.pdf",
+    priority: 27
+  },
+  {
+    id: "res-28",
+    title: "Indices (index laws) - 4B - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Indices (index laws) - 4B practice questions.",
+    url: "resources/deep_resource_45.pdf",
+    priority: 28
+  },
+  {
+    id: "res-29",
+    title: "Percentages - 3G - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Percentages - 3G practice questions.",
+    url: "resources/deep_resource_31.pdf",
+    priority: 29
+  },
+  {
+    id: "res-30",
+    title: "Reflections - 3T - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Reflections - 3T practice questions.",
+    url: "resources/deep_resource_40.pdf",
+    priority: 30
+  },
+  {
+    id: "res-31",
+    title: "Forming and solving equations - 4G - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Forming and solving equations - 4G practice questions.",
+    url: "resources/deep_resource_49.pdf",
+    priority: 31
+  },
+  {
+    id: "res-32",
+    title: "Real life graphs - 4D - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Real life graphs - 4D practice questions.",
+    url: "resources/deep_resource_47.pdf",
+    priority: 32
+  },
+  {
+    id: "res-33",
+    title: "Estimation - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Estimation practice questions.",
+    url: "resources/deep_resource_28.pdf",
+    priority: 33
+  },
+  {
+    id: "res-34",
+    title: "Volume of a cuboid - 4P - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Volume of a cuboid - 4P practice questions.",
+    url: "resources/deep_resource_54.pdf",
+    priority: 34
+  },
+  {
+    id: "res-35",
+    title: "Cylinders - 4S - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Cylinders - 4S practice questions.",
+    url: "resources/deep_resource_56.pdf",
+    priority: 35
+  },
+  {
+    id: "res-36",
+    title: "Frequency trees - 3Y - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Frequency trees - 3Y practice questions.",
+    url: "resources/deep_resource_43.pdf",
+    priority: 36
+  },
+  {
+    id: "res-37",
+    title: "Angles in parallel lines - 4L - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Angles in parallel lines - 4L practice questions.",
+    url: "resources/deep_resource_52.pdf",
+    priority: 37
+  },
+  {
+    id: "res-38",
+    title: "Pie charts - 2S - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Pie charts - 2S practice questions.",
+    url: "resources/deep_resource_24.pdf",
+    priority: 38
+  },
+  {
+    id: "res-39",
+    title: "Translations - 3V - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Translations - 3V practice questions.",
+    url: "resources/deep_resource_41.pdf",
+    priority: 39
+  },
+  {
+    id: "res-40",
+    title: "Loci and construction - 4Z - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Loci and construction - 4Z practice questions.",
+    url: "resources/deep_resource_60.pdf",
+    priority: 40
+  },
+  {
+    id: "res-41",
+    title: "Probability - 4V - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Probability - 4V practice questions.",
+    url: "resources/deep_resource_58.pdf",
+    priority: 41
+  },
+  {
+    id: "res-42",
+    title: "Speed - 5E - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Speed - 5E practice questions.",
+    url: "resources/deep_resource_63.pdf",
+    priority: 42
+  },
+  {
+    id: "res-43",
+    title: "Expanding and factorising - 4J - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Expanding and factorising - 4J practice questions.",
+    url: "resources/deep_resource_50.pdf",
+    priority: 43
+  },
+  {
+    id: "res-44",
+    title: "Division - 1D - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Division - 1D practice questions.",
+    url: "resources/deep_resource_3.pdf",
+    priority: 44
+  },
+  {
+    id: "res-45",
+    title: "Sim. equ. graphically - 5N - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Sim. equ. graphically - 5N practice questions.",
+    url: "resources/deep_resource_68.pdf",
+    priority: 45
+  },
+  {
+    id: "res-46",
+    title: "Solving quadratic equations - 5H - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Solving quadratic equations - 5H practice questions.",
+    url: "resources/deep_resource_65.pdf",
+    priority: 46
+  },
+  {
+    id: "res-47",
+    title: "Surface area - 4N - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Surface area - 4N practice questions.",
+    url: "resources/deep_resource_53.pdf",
+    priority: 47
+  },
+  {
+    id: "res-48",
+    title: "Reverse mean - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Reverse mean practice questions.",
+    url: "resources/deep_resource_59.pdf",
+    priority: 48
+  },
+  {
+    id: "res-49",
+    title: "Bearings - 4R - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Bearings - 4R practice questions.",
+    url: "resources/deep_resource_55.pdf",
+    priority: 49
+  },
+  {
+    id: "res-50",
+    title: "Similar shapes (lengths) - 5T - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Similar shapes (lengths) - 5T practice questions.",
+    url: "resources/deep_resource_71.pdf",
+    priority: 50
+  },
+  {
+    id: "res-51",
+    title: "Exact trig. values - 5V - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Exact trig. values - 5V practice questions.",
+    url: "resources/deep_resource_72.pdf",
+    priority: 51
+  },
+  {
+    id: "res-52",
+    title: "Rotations - 3S - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Rotations - 3S practice questions.",
+    url: "resources/deep_resource_39.pdf",
+    priority: 52
+  },
+  {
+    id: "res-53",
+    title: "Gradient of a line - 5Q - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Gradient of a line - 5Q practice questions.",
+    url: "resources/deep_resource_69.pdf",
+    priority: 53
+  },
+  {
+    id: "res-54",
+    title: "Harder indices - 6B - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Harder indices - 6B practice questions.",
+    url: "resources/deep_resource_77.pdf",
+    priority: 54
+  },
+  {
+    id: "res-55",
+    title: "Recurring decimals - 6A - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Recurring decimals - 6A practice questions.",
+    url: "resources/deep_resource_76.pdf",
+    priority: 55
+  },
+  {
+    id: "res-56",
+    title: "Venn diagrams - 5Y - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Venn diagrams - 5Y practice questions.",
+    url: "resources/deep_resource_74.pdf",
+    priority: 56
+  },
+  {
+    id: "res-57",
+    title: "Quadratic expressions - 5G - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Quadratic expressions - 5G practice questions.",
+    url: "resources/deep_resource_64.pdf",
+    priority: 57
+  },
+  {
+    id: "res-58",
+    title: "Standard form - 5D - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Standard form - 5D practice questions.",
+    url: "resources/deep_resource_62.pdf",
+    priority: 58
+  },
+  {
+    id: "res-59",
+    title: "Spheres and cones - 5S - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Spheres and cones - 5S practice questions.",
+    url: "resources/deep_resource_70.pdf",
+    priority: 59
+  },
+  {
+    id: "res-60",
+    title: "Inequalities on graphs - 6G - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Inequalities on graphs - 6G practice questions.",
+    url: "resources/deep_resource_80.pdf",
+    priority: 60
+  },
+  {
+    id: "res-61",
+    title: "Negative scale factors - 6J - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Negative scale factors - 6J practice questions.",
+    url: "resources/deep_resource_82.pdf",
+    priority: 61
+  },
+  {
+    id: "res-62",
+    title: "Surds - 7A - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Surds - 7A practice questions.",
+    url: "resources/deep_resource_86.pdf",
+    priority: 62
+  },
+  {
+    id: "res-63",
+    title: "Similar shapes (area and vol) - 6H - Qs",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Similar shapes (area and vol) - 6H practice questions.",
+    url: "resources/deep_resource_81.pdf",
+    priority: 63
+  },
+  {
+    id: "res-64",
+    title: "Rearranging (harder) - 7H - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Rearranging (harder) - 7H practice questions.",
+    url: "resources/deep_resource_91.pdf",
+    priority: 64
+  },
+  {
+    id: "res-65",
+    title: "Pressure - 5AA - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Pressure - 5AA practice questions.",
+    url: "resources/deep_resource_75.pdf",
+    priority: 65
+  },
+  {
+    id: "res-66",
+    title: "Area of any triangle - 7L - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Area of any triangle - 7L practice questions.",
+    url: "resources/deep_resource_93.pdf",
+    priority: 66
+  },
+  {
+    id: "res-67",
+    title: "3D pythagoras  / trig. - 7Q - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "3D pythagoras  / trig. - 7Q practice questions.",
+    url: "resources/deep_resource_96.pdf",
+    priority: 67
+  },
+  {
+    id: "res-68",
+    title: "Histograms - 7R - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Histograms - 7R practice questions.",
+    url: "resources/deep_resource_97.pdf",
+    priority: 68
+  },
+  {
+    id: "res-69",
+    title: "Sector areas and arc lengths - 5M - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Sector areas and arc lengths - 5M practice questions.",
+    url: "resources/deep_resource_67.pdf",
+    priority: 69
+  },
+  {
+    id: "res-70",
+    title: "Trigonometric & exp. Graphs - 7G - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Trigonometric & exp. Graphs - 7G practice questions.",
+    url: "resources/deep_resource_90.pdf",
+    priority: 70
+  },
+  {
+    id: "res-71",
+    title: "The quadratic formula - 7E - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "The quadratic formula - 7E practice questions.",
+    url: "resources/deep_resource_89.pdf",
+    priority: 71
+  },
+  {
+    id: "res-72",
+    title: "Exact trig. values (harder) - 7T - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Exact trig. values (harder) - 7T practice questions.",
+    url: "resources/deep_resource_98.pdf",
+    priority: 72
+  },
+  {
+    id: "res-73",
+    title: "Repeated change - 6D - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Repeated change - 6D practice questions.",
+    url: "resources/deep_resource_78.pdf",
+    priority: 73
+  },
+  {
+    id: "res-74",
+    title: "Parallel and perpendicular - 6F - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Parallel and perpendicular - 6F practice questions.",
+    url: "resources/deep_resource_79.pdf",
+    priority: 74
+  },
+  {
+    id: "res-75",
+    title: "Proportion (harder) - 7C - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Proportion (harder) - 7C practice questions.",
+    url: "resources/deep_resource_87.pdf",
+    priority: 75
+  },
+  {
+    id: "res-76",
+    title: "The cosine rule - 7N - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "The cosine rule - 7N practice questions.",
+    url: "resources/deep_resource_94.pdf",
+    priority: 76
+  },
+  {
+    id: "res-77",
+    title: "Cumulative frequency - 6L - Ans",
+    collection: "practice",
+    type: "Worksheet",
+    level: "Grades 1-9",
+    source: "Abir's Academy",
+    description: "Cumulative frequency - 6L practice questions.",
+    url: "resources/deep_resource_83.pdf",
+    priority: 77
+  },
 ];
 
-const grid = document.querySelector("[data-library-grid]");
-const search = document.querySelector("[data-library-search]");
-const sort = document.querySelector("[data-sort]");
-const filters = [...document.querySelectorAll("[data-library-filter]")];
-const routeButtons = [...document.querySelectorAll("[data-route]")];
-const savedFilter = document.querySelector("[data-saved-filter]");
-const resultCount = document.querySelector("[data-results-count]");
-const empty = document.querySelector("[data-library-empty]");
-const clearButtons = [...document.querySelectorAll("[data-clear-filters], [data-empty-clear]")];
-const toast = document.querySelector("[data-saved-toast]");
-let collection = "all";
-let savedOnly = false;
-let saved;
-try {
-  const storedRoutes = JSON.parse(localStorage.getItem("abirs-academy-saved") || "[]");
-  saved = new Set(Array.isArray(storedRoutes) ? storedRoutes : []);
-} catch {
-  saved = new Set();
-}
-let toastTimer;
 
-const collectionNames = {
-  start: "Start here", learn: "Learn", practice: "Practice", exams: "Exam prep",
-  tools: "Tool", providers: "Provider"
-};
-
-function safeText(value) {
-  return value.replace(/[&<>'"]/g, (character) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#039;", '"': "&quot;"
-  })[character]);
+// Viewer logic
+function openResource(url) {
+    const modal = document.getElementById('pdf-viewer-modal');
+    const iframe = document.getElementById('pdf-viewer-iframe');
+    const body = document.body;
+    
+    iframe.src = url;
+    modal.classList.remove('hidden');
+    body.classList.add('modal-open');
 }
 
-function updateSavedUI() {
-  document.querySelector("[data-saved-count]").textContent = saved.size;
-  savedFilter.setAttribute("aria-pressed", String(savedOnly));
+function attachModalListeners() {
+    const buttons = document.querySelectorAll('.open-resource-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = btn.getAttribute('data-url');
+            if(url) {
+                openResource(url);
+            }
+        });
+    });
 }
 
-function showToast(message) {
-  clearTimeout(toastTimer);
-  toast.textContent = message;
-  toast.classList.add("is-visible");
-  toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 1800);
+const closeBtn = document.getElementById('close-modal-btn');
+if(closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        const modal = document.getElementById('pdf-viewer-modal');
+        const iframe = document.getElementById('pdf-viewer-iframe');
+        const body = document.body;
+        
+        modal.classList.add('hidden');
+        body.classList.remove('modal-open');
+        iframe.src = '';
+    });
 }
 
-function visibleResources() {
-  const query = search.value.trim().toLowerCase();
-  let items = libraryResources.filter((resource) => {
-    const matchesCollection = collection === "all" || resource.collection === collection;
-    const matchesSaved = !savedOnly || saved.has(resource.id);
-    const searchable = `${resource.title} ${resource.description} ${resource.type} ${resource.level} ${resource.source}`.toLowerCase();
-    return matchesCollection && matchesSaved && searchable.includes(query);
-  });
-  if (sort.value === "az") items.sort((a, b) => a.title.localeCompare(b.title));
-  if (sort.value === "source") items.sort((a, b) => a.source.localeCompare(b.source) || a.title.localeCompare(b.title));
-  if (sort.value === "recommended") items.sort((a, b) => a.priority - b.priority);
-  return items;
-}
-
-function render() {
-  const items = visibleResources();
-  resultCount.textContent = items.length;
-  empty.hidden = items.length > 0;
-  grid.hidden = items.length === 0;
-  document.querySelector("[data-clear-filters]").hidden = collection === "all" && !savedOnly && !search.value;
-  grid.innerHTML = items.map((resource) => {
-    const isSaved = saved.has(resource.id);
-    return `
-      <article class="library-item">
-        <div class="library-item-top">
-          <span class="library-item-type">${safeText(collectionNames[resource.collection])}</span>
-          <button class="save-button${isSaved ? " is-saved" : ""}" type="button" data-save="${resource.id}" aria-pressed="${isSaved}" aria-label="${isSaved ? "Remove" : "Save"} ${safeText(resource.title)}">${isSaved ? "★" : "☆"}</button>
-        </div>
-        <h3>${safeText(resource.title)}</h3>
-        <p>${safeText(resource.description)}</p>
-        <div class="item-meta"><span>${safeText(resource.type)}</span><span>${safeText(resource.level)}</span></div>
-        <div class="item-bottom">
-          <small>${safeText(resource.source)}</small>
-          <a href="${resource.url}" target="_blank" rel="noopener noreferrer">Open source <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>`;
-  }).join("");
-  grid.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", toggleSaved));
-  updateSavedUI();
-}
-
-function toggleSaved(event) {
-  const id = event.currentTarget.dataset.save;
-  const resource = libraryResources.find((item) => item.id === id);
-  if (saved.has(id)) {
-    saved.delete(id);
-    showToast(`Removed “${resource.title}” from saved routes`);
-  } else {
-    saved.add(id);
-    showToast(`Saved “${resource.title}” on this device`);
-  }
-  localStorage.setItem("abirs-academy-saved", JSON.stringify([...saved]));
-  render();
-}
-
-function setCollection(nextCollection, shouldScroll = false) {
-  collection = nextCollection;
-  savedOnly = false;
-  filters.forEach((button) => button.classList.toggle("is-active", button.dataset.libraryFilter === collection));
-  render();
-  if (shouldScroll) document.querySelector("#library-browser").scrollIntoView({ behavior: "smooth" });
-}
-
-filters.forEach((button) => button.addEventListener("click", () => setCollection(button.dataset.libraryFilter)));
-routeButtons.forEach((button) => button.addEventListener("click", () => setCollection(button.dataset.route, true)));
-search.addEventListener("input", render);
-sort.addEventListener("change", render);
-savedFilter.addEventListener("click", () => { savedOnly = !savedOnly; render(); });
-clearButtons.forEach((button) => button.addEventListener("click", () => {
-  search.value = "";
-  savedOnly = false;
-  setCollection("all");
-}));
-document.addEventListener("keydown", (event) => {
-  if (event.key === "/" && document.activeElement !== search) {
-    event.preventDefault();
-    search.focus();
-  }
+document.addEventListener('DOMContentLoaded', () => {
+    // Re-attach listeners after initial render
+    setTimeout(attachModalListeners, 500);
 });
-
-document.querySelector("[data-total-count]").textContent = libraryResources.length;
-document.querySelector("[data-count-for='all']").textContent = libraryResources.length;
-["start", "learn", "practice", "exams", "tools", "providers"].forEach((name) => {
-  document.querySelector(`[data-count-for='${name}']`).textContent = libraryResources.filter((item) => item.collection === name).length;
-});
-
-const menuToggle = document.querySelector("[data-menu-toggle]");
-const nav = document.querySelector("[data-nav]");
-menuToggle.addEventListener("click", () => {
-  const open = menuToggle.getAttribute("aria-expanded") !== "true";
-  menuToggle.setAttribute("aria-expanded", String(open));
-  nav.classList.toggle("is-open", open);
-  document.body.classList.toggle("menu-open", open);
-});
-nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
-  menuToggle.setAttribute("aria-expanded", "false");
-  nav.classList.remove("is-open");
-  document.body.classList.remove("menu-open");
-}));
-
-const header = document.querySelector("[data-header]");
-const updateHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 12);
-window.addEventListener("scroll", updateHeader, { passive: true });
-updateHeader();
-
-const observer = new IntersectionObserver((entries, revealObserver) => entries.forEach((entry) => {
-  if (entry.isIntersecting) {
-    entry.target.classList.add("is-visible");
-    revealObserver.unobserve(entry.target);
-  }
-}), { threshold: .12 });
-document.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => observer.observe(item));
-document.querySelector("[data-year]").textContent = new Date().getFullYear();
-updateSavedUI();
-render();
