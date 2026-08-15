@@ -5720,7 +5720,7 @@ routeButtons.forEach((button) => {
             const h2s = document.querySelectorAll('.grade-heading');
             let targetGrade = route.replace('grade-', '');
             for(let h of h2s) {
-                if(h.innerText.includes('Grade ' + targetGrade)) {
+                if(h.textContent.includes('Grade ' + targetGrade)) {
                     // Scroll so the heading is nicely below the top nav
                     const y = h.getBoundingClientRect().top + window.scrollY - 100;
                     window.scrollTo({top: y, behavior: 'smooth'});
