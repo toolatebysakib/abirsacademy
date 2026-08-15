@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abirsacademy.pages.dev/sitemap.xml

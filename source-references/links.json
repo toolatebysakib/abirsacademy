@@ -1,0 +1,51 @@
+{
+  "purpose": "Reference manifest only. No third-party webpages, worksheets, images, PDFs, logos, or scripts are copied into this project.",
+  "checked_on": "2026-08-15",
+  "references": [
+    {
+      "title": "Maths Links home",
+      "url": "https://www.mathslinks.co.uk/",
+      "use": "Attribution and outbound link"
+    },
+    {
+      "title": "GCSE questions by topic",
+      "url": "https://www.mathslinks.co.uk/gcse-questions-by-topic",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "Resource finder",
+      "url": "https://www.mathslinks.co.uk/resource-finder",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "Resource organiser",
+      "url": "https://www.mathslinks.co.uk/resource-organiser",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "Interleaving resources",
+      "url": "https://www.mathslinks.co.uk/interleaving-resources",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "Past papers",
+      "url": "https://www.mathslinks.co.uk/past-papers",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "Practice papers",
+      "url": "https://www.mathslinks.co.uk/practice-papers",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "Maths quizzes",
+      "url": "https://www.mathslinks.co.uk/maths-quizzes",
+      "use": "Outbound resource route"
+    },
+    {
+      "title": "How to use MathsLinks",
+      "url": "https://www.mathslinks.co.uk/how-to-use-mathslinks",
+      "use": "Outbound study guidance"
+    }
+  ]
+}
