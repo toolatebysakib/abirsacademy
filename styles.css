@@ -25,6 +25,7 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 body.menu-open { overflow: hidden; }
@@ -187,6 +188,12 @@ h1 em, h2 em { color: var(--orange); font-family: Georgia, "Times New Roman", se
 .resource-source { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); color: #83958d; font-size: 11px; }
 .empty-state { padding: 36px; text-align: center; color: #aebdb6; }
 .credit-note { margin-top: 30px; display: flex; gap: 20px; padding: 23px; border-radius: 16px; background: #19392f; }
+.library-cta { margin-top: 28px; min-height: 118px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: 18px; background: var(--lime); color: var(--ink); text-decoration: none; transition: transform .2s, background .2s; }
+.library-cta:hover { transform: translateY(-3px); background: #e5ff8d; }
+.library-cta span { display: grid; gap: 5px; }
+.library-cta small { text-transform: uppercase; letter-spacing: .13em; font-size: 9px; font-weight: 900; }
+.library-cta strong { font-size: clamp(20px, 2.5vw, 30px); line-height: 1.1; letter-spacing: -.04em; }
+.library-cta i { flex: 0 0 auto; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--white); font-size: 22px; font-style: normal; }
 .credit-mark { flex: 0 0 auto; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: var(--orange); color: var(--ink); font-weight: 900; }
 .credit-note strong { font-size: 15px; }
 .credit-note p { margin: 4px 0 0; color: #aebdb6; font-size: 13px; }
@@ -302,6 +309,8 @@ h1 em, h2 em { color: var(--orange); font-family: Georgia, "Times New Roman", se
   .filter { white-space: nowrap; }
   .resource-grid { grid-template-columns: 1fr; }
   .resource-card { min-height: 270px; }
+  .library-cta { min-height: 105px; padding: 20px; }
+  .library-cta i { width: 42px; height: 42px; }
   .timeline li { grid-template-columns: 58px 1fr; padding: 22px 0; }
   .timeline-icon { display: none; }
   .quiz-card { padding: 21px; box-shadow: 10px 12px 0 rgba(16,37,31,.2); }

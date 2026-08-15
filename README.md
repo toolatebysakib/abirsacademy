@@ -31,7 +31,9 @@ The `_headers` file adds baseline security headers in production.
 
 ## Updating content
 
-The resource cards are defined in the `resources` array near the top of `app.js`. Add, edit or remove an object there, verify the page locally, then commit and push. Cloudflare Pages will redeploy from GitHub automatically.
+The homepage resource cards are defined in the `resources` array near the top of `app.js`. The complete resource-library catalogue is defined in `library.js`. Add, edit or remove an object there, verify the pages locally, then commit and push. Cloudflare Pages will redeploy from GitHub automatically.
+
+The library intentionally stores only destination metadata and original Abir's Academy summaries. Do not paste third-party worksheet contents or add downloaded publisher files unless their licence expressly permits redistribution.
 
 ## R2 archive contents
 

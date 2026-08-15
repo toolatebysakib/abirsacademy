@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Browse a clear, searchable GCSE maths resource library organised by goal, level, resource type and exam board."
+    />
+    <meta name="theme-color" content="#10251f" />
+    <meta property="og:title" content="Resource Library — Abir's Academy" />
+    <meta
+      property="og:description"
+      content="A smarter route into trusted GCSE maths questions, worksheets, tools and exam preparation."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abirsacademy.pages.dev/library.html" />
+    <meta property="og:image" content="https://abirsacademy.pages.dev/assets/og.png" />
+    <meta property="og:image:alt" content="Abir's Academy — Maths, made clear" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://abirsacademy.pages.dev/assets/og.png" />
+    <link rel="canonical" href="https://abirsacademy.pages.dev/library.html" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="library.css" />
+    <title>Resource Library — Abir's Academy</title>
+  </head>
+  <body class="library-page">
+    <a class="skip-link" href="#library-main">Skip to resource library</a>
+
+    <header class="site-header library-header" data-header>
+      <div class="nav-wrap shell">
+        <a class="brand" href="index.html" aria-label="Abir's Academy home">
+          <span class="brand-mark" aria-hidden="true">A²</span>
+          <span class="brand-name">Abir's <strong>Academy</strong></span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          data-menu-toggle
+        >
+          <span></span><span></span><span></span>
+          <span class="sr-only">Open navigation</span>
+        </button>
+
+        <nav id="site-nav" class="site-nav" aria-label="Primary navigation" data-nav>
+          <a href="index.html#approach">Approach</a>
+          <a class="is-current" href="library.html" aria-current="page">Resource library</a>
+          <a href="index.html#study-plan">Study plan</a>
+          <a class="nav-cta" href="#library-browser">Find a resource <span aria-hidden="true">↓</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="library-main">
+      <section class="library-hero">
+        <div class="library-hero-grid shell">
+          <div class="library-hero-copy reveal is-visible">
+            <p class="eyebrow eyebrow-light"><span></span> The resource library</p>
+            <h1>One clear<br /><em>way in.</em></h1>
+            <p>
+              Trusted maths destinations, reorganised around what you need to do next—not
+              around another long list of links.
+            </p>
+            <a class="button library-button" href="#library-browser">Browse all routes <span>↓</span></a>
+          </div>
+
+          <div class="library-compass reveal is-visible" aria-label="Resource library overview">
+            <div class="compass-ring ring-one"></div>
+            <div class="compass-ring ring-two"></div>
+            <div class="compass-core">
+              <span>START</span>
+              <strong>?</strong>
+              <small>with your goal</small>
+            </div>
+            <span class="compass-label label-top">learn</span>
+            <span class="compass-label label-right">prepare</span>
+            <span class="compass-label label-bottom">practise</span>
+            <span class="compass-label label-left">explore</span>
+          </div>
+        </div>
+
+        <div class="library-stats shell" aria-label="Library summary">
+          <div><strong data-total-count>40+</strong><span>curated routes</span></div>
+          <div><strong>6</strong><span>useful collections</span></div>
+          <div><strong>0</strong><span>files copied</span></div>
+          <div><strong>1</strong><span>calm starting point</span></div>
+        </div>
+      </section>
+
+      <section class="route-picker section shell" aria-labelledby="route-heading">
+        <div class="route-heading reveal">
+          <p class="eyebrow"><span></span> Choose by goal</p>
+          <h2 id="route-heading">What are you<br /><em>doing today?</em></h2>
+        </div>
+        <div class="route-grid">
+          <button class="route-card route-learn reveal" type="button" data-route="learn">
+            <span class="route-index">01</span>
+            <span class="route-symbol" aria-hidden="true">ƒ</span>
+            <strong>Learn a topic</strong>
+            <small>Explanations, topic routes and courses</small>
+          </button>
+          <button class="route-card route-practise reveal" type="button" data-route="practice">
+            <span class="route-index">02</span>
+            <span class="route-symbol" aria-hidden="true">×</span>
+            <strong>Build fluency</strong>
+            <small>Worksheets, interleaving and daily practice</small>
+          </button>
+          <button class="route-card route-exam reveal" type="button" data-route="exams">
+            <span class="route-index">03</span>
+            <span class="route-symbol" aria-hidden="true">✓</span>
+            <strong>Prepare for exams</strong>
+            <small>Past papers, tools and grade information</small>
+          </button>
+          <button class="route-card route-tools reveal" type="button" data-route="tools">
+            <span class="route-index">04</span>
+            <span class="route-symbol" aria-hidden="true">↗</span>
+            <strong>Use a tool</strong>
+            <small>Finders, organisers, quizzes and grids</small>
+          </button>
+        </div>
+      </section>
+
+      <section class="library-browser" id="library-browser">
+        <div class="shell">
+          <div class="browser-heading reveal">
+            <div>
+              <p class="eyebrow eyebrow-light"><span></span> All resource routes</p>
+              <h2>Find it.<br /><em>Use it.</em></h2>
+            </div>
+            <p>
+              Search by topic, publisher, level or exam board. Save useful routes on this
+              device to build a short revision list.
+            </p>
+          </div>
+
+          <div class="library-toolbar reveal">
+            <label class="library-search">
+              <span class="search-symbol" aria-hidden="true">⌕</span>
+              <span class="sr-only">Search the resource library</span>
+              <input
+                type="search"
+                placeholder="Try ‘algebra’, ‘AQA’, ‘quiz’ or ‘grade 9’…"
+                data-library-search
+              />
+              <kbd>/</kbd>
+            </label>
+            <label class="sort-control">
+              <span>Sort</span>
+              <select data-sort aria-label="Sort resources">
+                <option value="recommended">Recommended</option>
+                <option value="az">A–Z</option>
+                <option value="source">By source</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="browser-layout">
+            <aside class="filter-panel reveal" aria-label="Library filters">
+              <div class="filter-section">
+                <strong>Collection</strong>
+                <div class="library-filters" role="group" aria-label="Filter by collection">
+                  <button class="is-active" type="button" data-library-filter="all">
+                    <span>Everything</span><small data-count-for="all"></small>
+                  </button>
+                  <button type="button" data-library-filter="start">
+                    <span>Start here</span><small data-count-for="start"></small>
+                  </button>
+                  <button type="button" data-library-filter="learn">
+                    <span>Learn by topic</span><small data-count-for="learn"></small>
+                  </button>
+                  <button type="button" data-library-filter="practice">
+                    <span>Practice</span><small data-count-for="practice"></small>
+                  </button>
+                  <button type="button" data-library-filter="exams">
+                    <span>Exam prep</span><small data-count-for="exams"></small>
+                  </button>
+                  <button type="button" data-library-filter="tools">
+                    <span>Interactive tools</span><small data-count-for="tools"></small>
+                  </button>
+                  <button type="button" data-library-filter="providers">
+                    <span>Resource providers</span><small data-count-for="providers"></small>
+                  </button>
+                </div>
+              </div>
+
+              <button class="saved-filter" type="button" data-saved-filter aria-pressed="false">
+                <span aria-hidden="true">★</span>
+                <span>My saved routes</span>
+                <small data-saved-count>0</small>
+              </button>
+
+              <div class="source-promise">
+                <span aria-hidden="true">↗</span>
+                <p><strong>Always the original.</strong> Every destination opens at its source.</p>
+              </div>
+            </aside>
+
+            <div class="results-panel">
+              <div class="results-meta">
+                <p><strong data-results-count>0</strong> routes shown</p>
+                <button type="button" data-clear-filters hidden>Clear filters</button>
+              </div>
+              <div class="library-grid" data-library-grid aria-live="polite"></div>
+              <div class="library-empty" data-library-empty hidden>
+                <span aria-hidden="true">∅</span>
+                <h3>No route found</h3>
+                <p>Try a broader word or clear the current collection.</p>
+                <button type="button" data-empty-clear>Show everything</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="library-note section shell">
+        <div class="library-note-card reveal">
+          <div>
+            <p class="eyebrow"><span></span> A responsible upgrade</p>
+            <h2>Better access.<br /><em>Same ownership.</em></h2>
+          </div>
+          <div>
+            <p>
+              This library reorganises public entry points with original descriptions. It does
+              not mirror Maths Links pages or download worksheets belonging to Kenneth Stafford,
+              exam boards, or other publishers.
+            </p>
+            <a href="https://www.mathslinks.co.uk/about-maths-links" target="_blank" rel="noopener noreferrer">
+              Meet the original directory creator <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top shell">
+        <a class="brand brand-footer" href="index.html">
+          <span class="brand-mark">A²</span>
+          <span class="brand-name">Abir's <strong>Academy</strong></span>
+        </a>
+        <p>Clear thinking. Focused practice. Steady progress.</p>
+        <nav aria-label="Footer navigation">
+          <a href="index.html#approach">Approach</a>
+          <a href="library.html">Resources</a>
+          <a href="index.html#study-plan">Study plan</a>
+        </nav>
+      </div>
+      <div class="footer-bottom shell">
+        <span>© <span data-year></span> Abir's Academy</span>
+        <span>External resources remain with and open at their original publishers</span>
+      </div>
+    </footer>
+
+    <div class="saved-toast" data-saved-toast role="status" aria-live="polite"></div>
+    <script src="library.js" defer></script>
+  </body>
+</html>
