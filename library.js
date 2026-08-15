@@ -18,7 +18,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-d",
+    "url": "resources/resource_1.pdf",
     "priority": 101
   },
   {
@@ -29,7 +29,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Maths Genie",
     "description": "Direct link to pdf worksheet provided by Maths Genie.",
-    "url": "https://www.mathsgenie.co.uk/resources/1-addition-and-subtraction.pdf",
+    "url": "resources/resource_2.pdf",
     "priority": 102
   },
   {
@@ -40,7 +40,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2015/03/column-method.pdf",
+    "url": "resources/resource_3.pdf",
     "priority": 103
   },
   {
@@ -62,7 +62,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-d",
+    "url": "resources/resource_5.pdf",
     "priority": 107
   },
   {
@@ -73,7 +73,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/ordering-fdp/qs-ordering-fdp-pp",
+    "url": "resources/resource_6.pdf",
     "priority": 108
   },
   {
@@ -84,7 +84,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-g",
+    "url": "resources/resource_7.pdf",
     "priority": 110
   },
   {
@@ -95,7 +95,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/bidmas/questions-bidmas-past-paper-questions",
+    "url": "resources/resource_8.pdf",
     "priority": 111
   },
   {
@@ -106,7 +106,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/place-value/questions-place-value-past-paper-questions",
+    "url": "resources/resource_9.pdf",
     "priority": 112
   },
   {
@@ -117,7 +117,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/four-operations/ans-four-operations-pp",
+    "url": "resources/resource_10.pdf",
     "priority": 115
   },
   {
@@ -128,7 +128,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2018/01/multiplication-1-pdf.pdf",
+    "url": "resources/resource_11.pdf",
     "priority": 116
   },
   {
@@ -139,7 +139,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/ordering-fdp/as-ordering-fdp-pp",
+    "url": "resources/resource_12.pdf",
     "priority": 117
   },
   {
@@ -150,7 +150,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-e",
+    "url": "resources/resource_13.pdf",
     "priority": 118
   },
   {
@@ -172,7 +172,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/time/answers-time-past-paper-questions",
+    "url": "resources/resource_15.pdf",
     "priority": 122
   },
   {
@@ -183,7 +183,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-c",
+    "url": "resources/resource_16.pdf",
     "priority": 124
   },
   {
@@ -194,7 +194,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-b",
+    "url": "resources/resource_17.pdf",
     "priority": 126
   },
   {
@@ -205,7 +205,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/pictograms/answers-pictogram-past-paper-questions-solutions",
+    "url": "resources/resource_18.pdf",
     "priority": 127
   },
   {
@@ -216,7 +216,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/powers-and-roots/answers-powers-and-roots-past-paper-questions",
+    "url": "resources/resource_19.pdf",
     "priority": 130
   },
   {
@@ -227,7 +227,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Maths Genie",
     "description": "Direct link to pdf worksheet provided by Maths Genie.",
-    "url": "https://www.mathsgenie.co.uk/resources/1-multiplication-and-division.pdf",
+    "url": "resources/resource_20.pdf",
     "priority": 133
   },
   {
@@ -238,7 +238,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/powers-and-roots/questions-powers-and-roots-past-paper-questions",
+    "url": "resources/resource_21.pdf",
     "priority": 135
   },
   {
@@ -249,7 +249,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2013/02/division-pdf1.pdf",
+    "url": "resources/resource_22.pdf",
     "priority": 137
   },
   {
@@ -260,7 +260,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2019/08/Multiplication-1.pdf",
+    "url": "resources/resource_23.pdf",
     "priority": 141
   },
   {
@@ -293,7 +293,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-e",
+    "url": "resources/resource_26.pdf",
     "priority": 145
   },
   {
@@ -304,7 +304,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/negative-numbers/as-negative-numbers-pp",
+    "url": "resources/resource_27.pdf",
     "priority": 146
   },
   {
@@ -315,7 +315,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Maths Genie",
     "description": "Direct link to answers provided by Maths Genie.",
-    "url": "https://www.mathsgenie.co.uk/resources/1-multiplication-and-divisionans.pdf",
+    "url": "resources/resource_28.pdf",
     "priority": 147
   },
   {
@@ -326,7 +326,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2018/01/division-pdf.pdf",
+    "url": "resources/resource_29.pdf",
     "priority": 148
   },
   {
@@ -337,7 +337,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-a",
+    "url": "resources/resource_30.pdf",
     "priority": 151
   },
   {
@@ -348,7 +348,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/four-operations/qs-four-operations-pp",
+    "url": "resources/resource_31.pdf",
     "priority": 156
   },
   {
@@ -359,7 +359,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Mr Barton Maths",
     "description": "Direct link to pdf worksheet provided by Mr Barton Maths.",
-    "url": "https://www.mrbartonmaths.com/resources/GCSE%20Revision/GCSE%20Maths%20Takeaway/1.%20Grades%20G,%20F%20and%20E/10_addition-and-subtraction.pdf",
+    "url": "resources/resource_32.pdf",
     "priority": 158
   },
   {
@@ -370,7 +370,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2013/02/multiplication-pdf1.pdf",
+    "url": "resources/resource_33.pdf",
     "priority": 159
   },
   {
@@ -381,7 +381,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/bidmas/answers-bidmas-past-paper-questions",
+    "url": "resources/resource_34.pdf",
     "priority": 160
   },
   {
@@ -392,7 +392,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-a",
+    "url": "resources/resource_35.pdf",
     "priority": 162
   },
   {
@@ -403,7 +403,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-d",
+    "url": "resources/resource_36.pdf",
     "priority": 163
   },
   {
@@ -414,7 +414,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-b",
+    "url": "resources/resource_37.pdf",
     "priority": 165
   },
   {
@@ -425,7 +425,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-h",
+    "url": "resources/resource_38.pdf",
     "priority": 166
   },
   {
@@ -436,7 +436,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/factors-multiples-and-primes/answers-factors-multiples-and-primes-past-paper-questions",
+    "url": "resources/resource_39.pdf",
     "priority": 169
   },
   {
@@ -447,7 +447,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/coordinates/questions-coordinates-past-paper-questions",
+    "url": "resources/resource_40.pdf",
     "priority": 172
   },
   {
@@ -458,7 +458,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-f",
+    "url": "resources/resource_41.pdf",
     "priority": 173
   },
   {
@@ -469,7 +469,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/time/questions-time-past-paper-questions",
+    "url": "resources/resource_42.pdf",
     "priority": 176
   },
   {
@@ -480,7 +480,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2013/02/addition-pdf4.pdf",
+    "url": "resources/resource_43.pdf",
     "priority": 177
   },
   {
@@ -491,7 +491,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Mr Barton Maths",
     "description": "Direct link to pdf worksheet provided by Mr Barton Maths.",
-    "url": "https://www.mrbartonmaths.com/resources/GCSE%20Revision/GCSE%20Maths%20Takeaway/1.%20Grades%20G,%20F%20and%20E/11_multiplication-and-division.pdf",
+    "url": "resources/resource_44.pdf",
     "priority": 179
   },
   {
@@ -513,7 +513,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-calc-sheet-c",
+    "url": "resources/resource_46.pdf",
     "priority": 184
   },
   {
@@ -524,7 +524,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/rounding/as-rounding-pp",
+    "url": "resources/resource_47.pdf",
     "priority": 187
   },
   {
@@ -535,7 +535,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2015/03/division.pdf",
+    "url": "resources/resource_48.pdf",
     "priority": 188
   },
   {
@@ -557,7 +557,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-a",
+    "url": "resources/resource_50.pdf",
     "priority": 190
   },
   {
@@ -568,7 +568,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2018/09/Subtraction-pdf.pdf",
+    "url": "resources/resource_51.pdf",
     "priority": 191
   },
   {
@@ -579,7 +579,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/pictograms/questions-pictogram-past-paper-questions",
+    "url": "resources/resource_52.pdf",
     "priority": 193
   },
   {
@@ -590,7 +590,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/factors-multiples-and-primes/questions-factors-multiples-and-primes-past-paper-questions",
+    "url": "resources/resource_53.pdf",
     "priority": 194
   },
   {
@@ -601,7 +601,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/coordinates/answers-coordinates-past-paper-questions",
+    "url": "resources/resource_54.pdf",
     "priority": 195
   },
   {
@@ -612,7 +612,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Maths Genie",
     "description": "Direct link to answers provided by Maths Genie.",
-    "url": "https://www.mathsgenie.co.uk/resources/1-addition-and-subtractionans.pdf",
+    "url": "resources/resource_55.pdf",
     "priority": 196
   },
   {
@@ -623,7 +623,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Mr Barton Maths",
     "description": "Direct link to pdf worksheet provided by Mr Barton Maths.",
-    "url": "https://www.mrbartonmaths.com/resources/GCSE%20Revision/GCSE%20Maths%20Takeaway/1.%20Grades%20G,%20F%20and%20E/11.pdf",
+    "url": "resources/resource_56.pdf",
     "priority": 197
   },
   {
@@ -645,7 +645,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-b",
+    "url": "resources/resource_58.pdf",
     "priority": 199
   },
   {
@@ -656,7 +656,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-f",
+    "url": "resources/resource_59.pdf",
     "priority": 200
   },
   {
@@ -667,7 +667,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to answers provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2018/09/Subtraction-%E2%80%93-Video-304-Answers-1.pdf",
+    "url": "resources/resource_60.pdf",
     "priority": 202
   },
   {
@@ -678,7 +678,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/place-value/answers-place-value-past-paper-questions",
+    "url": "resources/resource_61.pdf",
     "priority": 203
   },
   {
@@ -689,7 +689,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-b",
+    "url": "resources/resource_62.pdf",
     "priority": 204
   },
   {
@@ -700,7 +700,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/rounding/qs-rounding-pp",
+    "url": "resources/resource_63.pdf",
     "priority": 207
   },
   {
@@ -711,7 +711,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/3d-shapes/ans-3d-shapes-pp",
+    "url": "resources/resource_64.pdf",
     "priority": 210
   },
   {
@@ -722,7 +722,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Mr Barton Maths",
     "description": "Direct link to pdf worksheet provided by Mr Barton Maths.",
-    "url": "https://www.mrbartonmaths.com/resources/GCSE%20Revision/GCSE%20Maths%20Takeaway/1.%20Grades%20G,%20F%20and%20E/10.pdf",
+    "url": "resources/resource_65.pdf",
     "priority": 211
   },
   {
@@ -733,7 +733,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2019/08/Division-short.pdf",
+    "url": "resources/resource_66.pdf",
     "priority": 214
   },
   {
@@ -744,7 +744,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-g",
+    "url": "resources/resource_67.pdf",
     "priority": 218
   },
   {
@@ -755,7 +755,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/3d-shapes/qs-3d-shapes-pp",
+    "url": "resources/resource_68.pdf",
     "priority": 219
   },
   {
@@ -777,7 +777,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Corbettmaths",
     "description": "Direct link to pdf worksheet provided by Corbettmaths.",
-    "url": "https://corbettmaths.com/wp-content/uploads/2019/08/Addition-column.pdf",
+    "url": "resources/resource_70.pdf",
     "priority": 222
   },
   {
@@ -788,7 +788,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-calc-sheet-h",
+    "url": "resources/resource_71.pdf",
     "priority": 223
   },
   {
@@ -799,7 +799,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/past-paper-questions/grade-1-gcse-maths-topics/negative-numbers/qs-negative-numbers-pp",
+    "url": "resources/resource_72.pdf",
     "priority": 226
   },
   {
@@ -810,7 +810,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-c",
+    "url": "resources/resource_73.pdf",
     "priority": 227
   },
   {
@@ -821,7 +821,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-d",
+    "url": "resources/resource_74.pdf",
     "priority": 230
   },
   {
@@ -832,7 +832,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to answers provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/answers/ans-grade-1-non-calc-sheet-c",
+    "url": "resources/resource_75.pdf",
     "priority": 231
   },
   {
@@ -843,7 +843,7 @@ const libraryResources = [
     "level": "GCSE",
     "source": "Kenneth Stafford",
     "description": "Direct link to exam questions provided by Kenneth Stafford.",
-    "url": "https://www.kennethstafford.co.uk/resources-folder/grade-1-sheets/questions/grade-1-non-calc-sheet-a",
+    "url": "resources/resource_76.pdf",
     "priority": 232
   }
 ];
@@ -926,12 +926,13 @@ function render() {
         <div class="item-meta"><span>${safeText(resource.type)}</span><span>${safeText(resource.level)}</span></div>
         <div class="item-bottom">
           <small>${safeText(resource.source)}</small>
-          <a href="${resource.url}" target="_blank" rel="noopener noreferrer">Open resource <span aria-hidden="true">↗</span></a>
+          <button type="button" class="open-resource-btn" data-url="${resource.url}" data-title="${safeText(resource.title)}" style="background:none; border:none; color:var(--text-main); font:inherit; cursor:pointer; text-decoration:underline;">Open resource <span aria-hidden="true">↗</span></button>
         </div>
       </article>`;
   }).join("");
   grid.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", toggleSaved));
   updateSavedUI();
+  attachModalListeners();
 }
 
 function toggleSaved(event) {
