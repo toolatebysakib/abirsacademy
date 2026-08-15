@@ -96,32 +96,62 @@
           <p class="eyebrow"><span></span> Choose by goal</p>
           <h2 id="route-heading">What are you<br /><em>doing today?</em></h2>
         </div>
-        <div class="route-grid">
-          <button class="route-card route-learn reveal" type="button" data-route="learn">
-            <span class="route-index">01</span>
-            <span class="route-symbol" aria-hidden="true">ƒ</span>
-            <strong>Learn a topic</strong>
-            <small>Explanations, topic routes and courses</small>
-          </button>
-          <button class="route-card route-practise reveal" type="button" data-route="practice">
-            <span class="route-index">02</span>
-            <span class="route-symbol" aria-hidden="true">×</span>
-            <strong>Build fluency</strong>
-            <small>Worksheets, interleaving and daily practice</small>
-          </button>
-          <button class="route-card route-exam reveal" type="button" data-route="exams">
-            <span class="route-index">03</span>
-            <span class="route-symbol" aria-hidden="true">✓</span>
-            <strong>Prepare for exams</strong>
-            <small>Past papers, tools and grade information</small>
-          </button>
-          <button class="route-card route-tools reveal" type="button" data-route="tools">
-            <span class="route-index">04</span>
-            <span class="route-symbol" aria-hidden="true">↗</span>
-            <strong>Use a tool</strong>
-            <small>Finders, organisers, quizzes and grids</small>
-          </button>
-        </div>
+        <div class="route-grid grade-grid">
+  <button class="route-card route-grade reveal" type="button" data-route="grade-1">
+    <span class="route-index">01</span>
+    <span class="route-symbol" aria-hidden="true">G1</span>
+    <strong>Grade 1</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-2">
+    <span class="route-index">02</span>
+    <span class="route-symbol" aria-hidden="true">G2</span>
+    <strong>Grade 2</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-3">
+    <span class="route-index">03</span>
+    <span class="route-symbol" aria-hidden="true">G3</span>
+    <strong>Grade 3</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-4">
+    <span class="route-index">04</span>
+    <span class="route-symbol" aria-hidden="true">G4</span>
+    <strong>Grade 4</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-5">
+    <span class="route-index">05</span>
+    <span class="route-symbol" aria-hidden="true">G5</span>
+    <strong>Grade 5</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-6">
+    <span class="route-index">06</span>
+    <span class="route-symbol" aria-hidden="true">G6</span>
+    <strong>Grade 6</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-7">
+    <span class="route-index">07</span>
+    <span class="route-symbol" aria-hidden="true">G7</span>
+    <strong>Grade 7</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-8">
+    <span class="route-index">08</span>
+    <span class="route-symbol" aria-hidden="true">G8</span>
+    <strong>Grade 8</strong>
+    <small>Foundation & Higher</small>
+  </button>
+  <button class="route-card route-grade reveal" type="button" data-route="grade-9">
+    <span class="route-index">09</span>
+    <span class="route-symbol" aria-hidden="true">G9</span>
+    <strong>Grade 9</strong>
+    <small>Foundation & Higher</small>
+  </button>
+</div>
       </section>
 
       <section class="library-browser" id="library-browser">
@@ -161,30 +191,71 @@
           <div class="browser-layout">
             <aside class="filter-panel reveal" aria-label="Library filters">
               <div class="filter-section">
-                <strong>Collection</strong>
-                <div class="library-filters" role="group" aria-label="Filter by collection">
-                  <button class="is-active" type="button" data-library-filter="all">
-                    <span>Everything</span><small data-count-for="all"></small>
-                  </button>
-                  <button type="button" data-library-filter="start">
-                    <span>Start here</span><small data-count-for="start"></small>
-                  </button>
-                  <button type="button" data-library-filter="learn">
-                    <span>Learn by topic</span><small data-count-for="learn"></small>
-                  </button>
-                  <button type="button" data-library-filter="practice">
-                    <span>Practice</span><small data-count-for="practice"></small>
-                  </button>
-                  <button type="button" data-library-filter="exams">
-                    <span>Exam prep</span><small data-count-for="exams"></small>
-                  </button>
-                  <button type="button" data-library-filter="tools">
-                    <span>Interactive tools</span><small data-count-for="tools"></small>
-                  </button>
-                  <button type="button" data-library-filter="providers">
-                    <span>Resource providers</span><small data-count-for="providers"></small>
-                  </button>
-                </div>
+  <strong>Grade</strong>
+  <div class="library-filters grade-filters" role="group" aria-label="Filter by grade">
+    <button class="is-active" type="button" data-library-filter="all">
+      <span>All Grades</span><small data-count-for="all"></small>
+    </button>
+    <button type="button" data-library-filter="grade-1">
+      <span>Grade 1</span><small data-count-for="grade-1"></small>
+    </button>
+    <button type="button" data-library-filter="grade-2">
+      <span>Grade 2</span><small data-count-for="grade-2"></small>
+    </button>
+    <button type="button" data-library-filter="grade-3">
+      <span>Grade 3</span><small data-count-for="grade-3"></small>
+    </button>
+    <button type="button" data-library-filter="grade-4">
+      <span>Grade 4</span><small data-count-for="grade-4"></small>
+    </button>
+    <button type="button" data-library-filter="grade-5">
+      <span>Grade 5</span><small data-count-for="grade-5"></small>
+    </button>
+    <button type="button" data-library-filter="grade-6">
+      <span>Grade 6</span><small data-count-for="grade-6"></small>
+    </button>
+    <button type="button" data-library-filter="grade-7">
+      <span>Grade 7</span><small data-count-for="grade-7"></small>
+    </button>
+    <button type="button" data-library-filter="grade-8">
+      <span>Grade 8</span><small data-count-for="grade-8"></small>
+    </button>
+    <button type="button" data-library-filter="grade-9">
+      <span>Grade 9</span><small data-count-for="grade-9"></small>
+    </button>
+  </div>
+</div>
+<div class="filter-section">
+  <strong>Tier</strong>
+  <div class="library-filters tier-filters" role="group" aria-label="Filter by tier">
+    <button class="is-active" type="button" data-tier-filter="all">
+      <span>All Tiers</span>
+    </button>
+    <button type="button" data-tier-filter="Foundation">
+      <span>Foundation (G1-5)</span>
+    </button>
+    <button type="button" data-tier-filter="Higher">
+      <span>Higher (G5-9)</span>
+    </button>
+  </div>
+</div>
+<div class="filter-section">
+  <strong>Subject</strong>
+  <div class="library-filters subject-filters" role="group" aria-label="Filter by subject">
+    <button class="is-active" type="button" data-subject-filter="all">
+      <span>All Subjects</span>
+    </button>
+    <button type="button" data-subject-filter="Mathematics">
+      <span>Mathematics</span>
+    </button>
+    <button type="button" data-subject-filter="Science">
+      <span>Science</span>
+    </button>
+    <button type="button" data-subject-filter="English">
+      <span>English</span>
+    </button>
+  </div>
+</div>
               </div>
 
               <button class="saved-filter" type="button" data-saved-filter aria-pressed="false">
