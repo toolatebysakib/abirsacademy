@@ -11,7 +11,7 @@
     <title>Resource Library | Abir's Academy</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="dashboard.css?v=9" />
+    <link rel="stylesheet" href="dashboard.css?v=11" />
   </head>
   <body class="dashboard-page">
     <a class="skip-link" href="#library-content">Skip to resources</a>
@@ -128,12 +128,17 @@
 
           <div class="load-more-wrap" data-load-more-wrap hidden>
             <button class="load-more" type="button" data-load-more>Load more resources</button>
+            <div class="infinite-scroll-status" data-infinite-status role="status" aria-live="polite" hidden>
+              <span class="infinite-scroll-spinner" aria-hidden="true"></span>
+              <span>Loading more resources...</span>
+            </div>
+            <div class="infinite-scroll-sentinel" data-infinite-sentinel aria-hidden="true"></div>
           </div>
         </div>
       </main>
     </div>
 
     <div class="toast" data-saved-toast role="status" aria-live="polite" aria-atomic="true"></div>
-    <script src="library-v8.js?v=10" defer></script>
+    <script src="library-v8.js?v=11" defer></script>
   </body>
 </html>

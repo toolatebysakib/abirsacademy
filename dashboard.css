@@ -368,7 +368,28 @@ body.dashboard-page {
 .skeleton-card span:nth-child(4) { width: 82%; }
 @keyframes shimmer { to { background-position: -240% 0; } }
 
-.load-more-wrap { padding: 28px 0 5px; text-align: center; }
+.load-more-wrap { min-height: 2px; padding: 28px 0 5px; text-align: center; }
+.load-more-wrap.is-loading { min-height: 72px; }
+.infinite-scroll-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--dash-muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+.infinite-scroll-status[hidden] { display: none; }
+.infinite-scroll-spinner {
+  width: 19px;
+  height: 19px;
+  border: 3px solid rgba(26, 25, 23, 0.16);
+  border-top-color: var(--dash-orange);
+  border-radius: 50%;
+  animation: infinite-scroll-spin 700ms linear infinite;
+}
+.infinite-scroll-sentinel { height: 1px; }
+@keyframes infinite-scroll-spin { to { transform: rotate(360deg); } }
 .load-more,
 .library-error button {
   min-height: 46px;
@@ -520,4 +541,5 @@ input:focus-visible { outline: 3px solid var(--dash-blue); outline-offset: 3px; 
   .sidebar-toggle > span,
   .toast { transition: none; }
   .skeleton-card span { animation: none; }
+  .infinite-scroll-spinner { animation: none; border-color: var(--dash-orange); }
 }

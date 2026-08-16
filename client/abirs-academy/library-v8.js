@@ -17,6 +17,8 @@ const elements = {
   retry: document.querySelector("[data-retry]"),
   loadMore: document.querySelector("[data-load-more]"),
   loadMoreWrap: document.querySelector("[data-load-more-wrap]"),
+  infiniteStatus: document.querySelector("[data-infinite-status]"),
+  scrollSentinel: document.querySelector("[data-infinite-sentinel]"),
   toast: document.querySelector("[data-saved-toast]"),
   sidebar: document.querySelector("[data-sidebar]"),
   sidebarToggle: document.querySelector("[data-sidebar-toggle]"),
@@ -31,6 +33,8 @@ const state = {
   page: 1,
   total: 0,
   hasMore: false,
+  loading: false,
+  autoLoadPaused: false,
   requestNumber: 0,
   controller: null,
 };
@@ -39,6 +43,7 @@ let saved = new Set();
 let searchTimer;
 let toastTimer;
 let fallbackCataloguePromise;
+let infiniteScrollObserver;
 
 const initialParams = new URLSearchParams(window.location.search);
 const initialGrade = initialParams.get("grade");
@@ -195,8 +200,16 @@ function updateResultState() {
   elements.empty.hidden = state.total !== 0;
   elements.grid.hidden = state.total === 0;
   elements.loadMoreWrap.hidden = !state.hasMore;
-  elements.loadMore.disabled = false;
-  elements.loadMore.textContent = "Load more resources";
+  updateInfiniteScrollUI();
+}
+
+function updateInfiniteScrollUI() {
+  const autoLoading = Boolean(infiniteScrollObserver) && !state.autoLoadPaused;
+  elements.loadMore.hidden = autoLoading;
+  elements.loadMore.disabled = state.loading;
+  elements.loadMore.textContent = state.autoLoadPaused ? "Try loading more resources" : "Load more resources";
+  elements.infiniteStatus.hidden = !autoLoading || !state.loading;
+  elements.loadMoreWrap.classList.toggle("is-loading", autoLoading && state.loading);
 }
 
 function requestParams(page) {
@@ -330,9 +343,12 @@ async function fetchResourcePage(signal) {
 }
 
 async function loadResources({ append = false } = {}) {
+  if (append && state.loading) return;
   const requestNumber = ++state.requestNumber;
   if (state.controller) state.controller.abort();
   state.controller = new AbortController();
+  state.loading = true;
+  state.autoLoadPaused = false;
   elements.error.hidden = true;
   elements.grid.setAttribute("aria-busy", "true");
 
@@ -342,8 +358,7 @@ async function loadResources({ append = false } = {}) {
     elements.loadMoreWrap.hidden = true;
     elements.grid.innerHTML = skeletons();
   } else {
-    elements.loadMore.disabled = true;
-    elements.loadMore.textContent = "Loading...";
+    updateInfiniteScrollUI();
   }
 
   try {
@@ -360,15 +375,41 @@ async function loadResources({ append = false } = {}) {
   } catch (error) {
     if (error.name === "AbortError") return;
     console.error(error);
-    if (!append) elements.grid.innerHTML = "";
-    elements.grid.hidden = true;
-    elements.empty.hidden = true;
-    elements.loadMoreWrap.hidden = true;
-    elements.error.hidden = false;
-    elements.summary.textContent = "Resource catalogue unavailable";
+    if (append) {
+      state.page = Math.max(1, state.page - 1);
+      state.autoLoadPaused = true;
+      elements.loadMoreWrap.hidden = false;
+      showToast("More resources could not be loaded. Please try again.");
+    } else {
+      elements.grid.innerHTML = "";
+      elements.grid.hidden = true;
+      elements.empty.hidden = true;
+      elements.loadMoreWrap.hidden = true;
+      elements.error.hidden = false;
+      elements.summary.textContent = "Resource catalogue unavailable";
+    }
   } finally {
-    if (requestNumber === state.requestNumber) elements.grid.setAttribute("aria-busy", "false");
+    if (requestNumber === state.requestNumber) {
+      state.loading = false;
+      elements.grid.setAttribute("aria-busy", "false");
+      updateInfiniteScrollUI();
+    }
   }
+}
+
+function loadNextPage() {
+  if (!state.hasMore || state.loading) return;
+  state.page += 1;
+  loadResources({ append: true });
+}
+
+function setupInfiniteScroll() {
+  if (!("IntersectionObserver" in window)) return;
+  infiniteScrollObserver = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting) && !state.autoLoadPaused) loadNextPage();
+  }, { rootMargin: "700px 0px", threshold: 0 });
+  infiniteScrollObserver.observe(elements.scrollSentinel);
+  updateInfiniteScrollUI();
 }
 
 function resetAndLoad() {
@@ -445,9 +486,8 @@ elements.grid.addEventListener("click", (event) => {
 });
 
 elements.loadMore.addEventListener("click", () => {
-  if (!state.hasMore) return;
-  state.page += 1;
-  loadResources({ append: true });
+  state.autoLoadPaused = false;
+  loadNextPage();
 });
 
 elements.clearButtons.forEach((button) => button.addEventListener("click", clearFilters));
@@ -481,5 +521,6 @@ if (wideScreenQuery.addEventListener) wideScreenQuery.addEventListener("change",
 else wideScreenQuery.addListener(handleWideScreenChange);
 
 updateFilterUI();
+setupInfiniteScroll();
 loadResources();
 if (initialParams.get("focus") === "search") requestAnimationFrame(() => elements.search.focus());

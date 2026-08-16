@@ -48,6 +48,17 @@ await test("search is paginated and includes facets", async () => {
   assertEquals(body.facets.tiers.Foundation + body.facets.tiers.Higher, 462);
 });
 
+await test("every resource is reachable through continuous pagination", async () => {
+  const ids: string[] = [];
+  for (let page = 1; page <= Math.ceil(libraryResources.length / 24); page += 1) {
+    const { response, body } = await jsonResponse(`/api/search?page=${page}&limit=24`);
+    assertEquals(response.status, 200);
+    ids.push(...body.results.map((item: { id: string }) => item.id));
+  }
+  assertEquals(ids.length, libraryResources.length);
+  assertEquals(new Set(ids).size, libraryResources.length);
+});
+
 await test("search filters grade, tier, text and saved ids", async () => {
   const grade = await jsonResponse("/api/search?grade=grade-8&limit=48");
   assertEquals(grade.body.total, 27);
@@ -138,6 +149,17 @@ await test("static catalogue fallback is complete and does not expose storage UR
   );
   assert(!fallbackText.includes("r2.dev"));
   assert(!fallback.resources.some((item: Record<string, unknown>) => "worksheet_url" in item || "solution_url" in item));
+});
+
+await test("library uses automatic infinite scrolling with an accessible fallback", async () => {
+  const html = await Deno.readTextFile(new URL("library.html", projectRoot));
+  const script = await Deno.readTextFile(new URL("library-v8.js", projectRoot));
+  assert(html.includes("data-infinite-sentinel"));
+  assert(html.includes("data-infinite-status"));
+  assert(script.includes("new IntersectionObserver"));
+  assert(script.includes("rootMargin: \"700px 0px\""));
+  assert(script.includes("infiniteScrollObserver.observe(elements.scrollSentinel)"));
+  assert(script.includes("if (!(\"IntersectionObserver\" in window)) return"));
 });
 
 await test("maintained client mirror matches the live root", async () => {
