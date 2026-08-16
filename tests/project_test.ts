@@ -157,7 +157,12 @@ await test("PDF Studio preserves active tools while stabilising renders", async 
     assert(html.includes(`data-tool="${tool}"`));
     assert(script.includes(`${tool}:`));
   }
-  assert(!script.includes("state.draft = null;\n  state.drawing = false;"));
+  const renderSection = script.slice(
+    script.indexOf("async function renderPage()"),
+    script.indexOf("function workspaceAvailableWidth()"),
+  );
+  assert(!renderSection.includes("state.draft = null"));
+  assert(!renderSection.includes("state.drawing = false"));
   assert(script.includes("state.renderedPage === state.page"));
   assert(script.includes("layoutWidthChanged(lastWorkspaceBoxWidth, boxWidth)"));
   assert(script.includes("getBoundingClientRect().width"));
