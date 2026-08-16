@@ -5551,7 +5551,7 @@ const sort = document.querySelector("[data-sort]");
 const gradeFilters = [...document.querySelectorAll("[data-library-filter]")];
 const tierFilters = [...document.querySelectorAll("[data-tier-filter]")];
 const subjectFilters = [...document.querySelectorAll("[data-subject-filter]")];
-const routeButtons = [...document.querySelectorAll("[data-route]")];
+const routeButtons = [...document.querySelectorAll(".nav-item[data-library-filter], [data-route]")];
 const savedFilter = document.querySelector("[data-saved-filter]");
 const resultCount = document.querySelector("[data-results-count]");
 const empty = document.querySelector("[data-library-empty]");
@@ -5713,17 +5713,16 @@ subjectFilters.forEach((button) => {
 
 routeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const route = button.getAttribute("data-route");
-    if(route.startsWith("grade-")) {
-        setGradeFilter("all"); // clear filter first to show all headers
-        setTimeout(() => {
-            const h2s = document.querySelectorAll('.grade-heading');
-            let targetGrade = route.replace('grade-', '');
-            for(let h of h2s) {
-                if(h.textContent.includes('Grade ' + targetGrade)) {
-                    // Scroll so the heading is nicely below the top nav
-                    const y = h.getBoundingClientRect().top + window.scrollY - 100;
-                    window.scrollTo({top: y, behavior: 'smooth'});
+    const route = button.getAttribute("data-library-filter") || button.getAttribute("data-route");
+    if(route && route.startsWith("grade-")) {
+        setGradeFilter(route);
+    } else if (route === "all") {
+        setGradeFilter("all");
+    }
+    search.value = "";
+    savedOnly = false;
+  });
+});
                     break;
                 }
             }
@@ -5794,3 +5793,6 @@ const observer = new IntersectionObserver((entries, revealObserver) => entries.f
 document.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => observer.observe(item));
 document.querySelector("[data-year]").textContent = new Date().getFullYear();
 
+
+updateSavedUI();
+render();
