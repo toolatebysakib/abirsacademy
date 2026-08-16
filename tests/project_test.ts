@@ -127,6 +127,19 @@ await test("PDF resources route through Study Studio and the local proxy", async
   assert(headers.includes("worker-src 'self' blob:"));
 });
 
+await test("static catalogue fallback is complete and does not expose storage URLs", async () => {
+  const fallbackText = await Deno.readTextFile(new URL("catalogue.json", projectRoot));
+  const fallback = JSON.parse(fallbackText);
+  assertEquals(fallback.version, 1);
+  assertEquals(fallback.resources.length, libraryResources.length);
+  assertEquals(
+    fallback.resources.map((item: { id: string }) => item.id),
+    libraryResources.map((item) => item.id),
+  );
+  assert(!fallbackText.includes("r2.dev"));
+  assert(!fallback.resources.some((item: Record<string, unknown>) => "worksheet_url" in item || "solution_url" in item));
+});
+
 await test("maintained client mirror matches the live root", async () => {
   try {
     await Deno.stat(new URL("client/abirs-academy", projectRoot));
@@ -134,7 +147,7 @@ await test("maintained client mirror matches the live root", async () => {
     return;
   }
   for (const filename of [
-    "app.js", "index.html", "library.html", "library-v8.js", "dashboard.css",
+    "app.js", "index.html", "library.html", "library-v8.js", "dashboard.css", "catalogue.json",
     "pdf-studio.html", "pdf-studio.js", "pdf-studio.css", "_headers",
     "functions/api/data.js", "functions/api/search.js", "functions/api/resource.js",
     "vendor/pdf.mjs", "vendor/pdf.worker.mjs", "vendor/pdf-lib.min.js",

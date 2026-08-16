@@ -1,5 +1,6 @@
 const PAGE_SIZE = 24;
 const SAVED_KEY = "abirs-academy-saved";
+const CATALOGUE_FALLBACK_URL = "/catalogue.json?v=1";
 
 const elements = {
   grid: document.querySelector("[data-library-grid]"),
@@ -37,6 +38,7 @@ const state = {
 let saved = new Set();
 let searchTimer;
 let toastTimer;
+let fallbackCataloguePromise;
 
 const initialParams = new URLSearchParams(window.location.search);
 const initialGrade = initialParams.get("grade");
@@ -165,19 +167,23 @@ function updateFilterUI() {
 }
 
 function updateFacets(data) {
-  document.querySelector("[data-total-count]").textContent = data.catalogueTotal;
-  document.querySelector("[data-grade-count='all']").textContent = data.catalogueTotal;
+  const totalCount = document.querySelector("[data-total-count]");
+  const allGradeCount = document.querySelector("[data-grade-count='all']");
+  if (totalCount) totalCount.textContent = data.catalogueTotal;
+  if (allGradeCount) allGradeCount.textContent = data.catalogueTotal;
   document.querySelectorAll("[data-grade-count]").forEach((label) => {
     if (label.dataset.gradeCount === "all") return;
-    const count = data.facets.grades[label.dataset.gradeCount] || 0;
+    const count = data.facets?.grades?.[label.dataset.gradeCount] || 0;
     label.textContent = count;
     const button = label.closest("button");
-    button.disabled = count === 0;
-    if (count === 0) button.title = `No Grade ${label.dataset.gradeCount} resources are available yet`;
+    if (button) {
+      button.disabled = count === 0;
+      button.title = count === 0 ? `No Grade ${label.dataset.gradeCount} resources are available yet` : "";
+    }
   });
   document.querySelectorAll("[data-tier-count]").forEach((label) => {
     const tier = label.dataset.tierCount;
-    label.textContent = data.facets.tiers[tier] || 0;
+    label.textContent = data.facets?.tiers?.[tier] || 0;
   });
 }
 
@@ -205,9 +211,127 @@ function requestParams(page) {
   return params;
 }
 
+function isResourcePage(data) {
+  return Boolean(
+    data
+      && Array.isArray(data.results)
+      && Number.isFinite(data.total)
+      && Number.isFinite(data.catalogueTotal)
+      && typeof data.hasMore === "boolean"
+      && data.facets?.grades
+      && data.facets?.tiers,
+  );
+}
+
+async function waitForRetry(signal) {
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(resolve, 180);
+    signal.addEventListener("abort", () => {
+      clearTimeout(timer);
+      reject(new DOMException("The request was aborted", "AbortError"));
+    }, { once: true });
+  });
+}
+
+async function fetchFromApi(signal) {
+  let lastError;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const params = requestParams(state.page);
+      if (attempt) params.set("retry", String(Date.now()));
+      const response = await fetch(`/api/search?${params}`, {
+        cache: attempt ? "no-store" : "default",
+        credentials: "same-origin",
+        headers: { Accept: "application/json" },
+        signal,
+      });
+      if (!response.ok) throw new Error(`Resource API returned ${response.status}`);
+      const data = await response.json();
+      if (!isResourcePage(data)) throw new Error("Resource API returned an invalid response");
+      return data;
+    } catch (error) {
+      if (error.name === "AbortError") throw error;
+      lastError = error;
+      if (!attempt) await waitForRetry(signal);
+    }
+  }
+  throw lastError;
+}
+
+async function loadFallbackCatalogue(signal) {
+  if (!fallbackCataloguePromise) {
+    fallbackCataloguePromise = fetch(CATALOGUE_FALLBACK_URL, {
+      cache: "force-cache",
+      credentials: "same-origin",
+      headers: { Accept: "application/json" },
+      signal,
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Catalogue fallback returned ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data.resources)) throw new Error("Catalogue fallback is invalid");
+        return data.resources;
+      })
+      .catch((error) => {
+        fallbackCataloguePromise = null;
+        throw error;
+      });
+  }
+  return fallbackCataloguePromise;
+}
+
+function searchFallback(resources) {
+  const grade = state.grade.replace(/^grade-/, "");
+  const query = state.query.toLocaleLowerCase("en-GB");
+  const matches = resources.filter((resource) => {
+    if (state.savedOnly && !saved.has(resource.id)) return false;
+    if (grade !== "all" && String(resource.grade) !== grade) return false;
+    if (state.tier !== "all" && resource.tier !== state.tier) return false;
+    if (!query) return true;
+    return [
+      resource.title,
+      resource.topic,
+      resource.subject,
+      `Grade ${resource.grade}`,
+      resource.tier,
+      resource.board,
+      resource.description,
+    ].join(" ").toLocaleLowerCase("en-GB").includes(query);
+  });
+  const start = (state.page - 1) * PAGE_SIZE;
+  const results = matches.slice(start, start + PAGE_SIZE);
+  const grades = {};
+  const tiers = { Foundation: 0, Higher: 0 };
+  resources.forEach((resource) => {
+    grades[resource.grade] = (grades[resource.grade] || 0) + 1;
+    tiers[resource.tier] = (tiers[resource.tier] || 0) + 1;
+  });
+  return {
+    total: matches.length,
+    catalogueTotal: resources.length,
+    page: state.page,
+    pageSize: PAGE_SIZE,
+    hasMore: start + results.length < matches.length,
+    facets: { grades, tiers },
+    results,
+  };
+}
+
+async function fetchResourcePage(signal) {
+  try {
+    return await fetchFromApi(signal);
+  } catch (apiError) {
+    if (apiError.name === "AbortError") throw apiError;
+    console.warn("The resource API was unavailable; using the static catalogue.", apiError);
+    return searchFallback(await loadFallbackCatalogue(signal));
+  }
+}
+
 async function loadResources({ append = false } = {}) {
   const requestNumber = ++state.requestNumber;
-  state.controller?.abort();
+  if (state.controller) state.controller.abort();
   state.controller = new AbortController();
   elements.error.hidden = true;
   elements.grid.setAttribute("aria-busy", "true");
@@ -223,12 +347,7 @@ async function loadResources({ append = false } = {}) {
   }
 
   try {
-    const response = await fetch(`/api/search?${requestParams(state.page)}`, {
-      headers: { Accept: "application/json" },
-      signal: state.controller.signal,
-    });
-    if (!response.ok) throw new Error(`Resource API returned ${response.status}`);
-    const data = await response.json();
+    const data = await fetchResourcePage(state.controller.signal);
     if (requestNumber !== state.requestNumber) return;
 
     if (!append) elements.grid.innerHTML = "";
@@ -354,9 +473,12 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-window.matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+const wideScreenQuery = window.matchMedia("(min-width: 901px)");
+const handleWideScreenChange = (event) => {
   if (event.matches) closeSidebar();
-});
+};
+if (wideScreenQuery.addEventListener) wideScreenQuery.addEventListener("change", handleWideScreenChange);
+else wideScreenQuery.addListener(handleWideScreenChange);
 
 updateFilterUI();
 loadResources();
