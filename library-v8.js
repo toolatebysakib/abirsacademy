@@ -5579,7 +5579,7 @@ function safeText(value) {
 }
 
 function updateSavedUI() {
-  document.querySelector("[data-saved-count]").textContent = saved.size;
+  if(document.querySelector("[data-saved-count]")) document.querySelector("[data-saved-count]").textContent = saved.size;
   savedFilter.setAttribute("aria-pressed", String(savedOnly));
 }
 
@@ -5702,9 +5702,9 @@ routeButtons.forEach((button) => {
   });
 });
 
-search.addEventListener("input", render);
-sort.addEventListener("change", render);
-savedFilter.addEventListener("click", () => { savedOnly = !savedOnly; render(); });
+if(search) search.addEventListener("input", render);
+if(sort) sort.addEventListener("change", render);
+if(savedFilter) savedFilter.addEventListener("click", () => { savedOnly = !savedOnly; render(); });
 
 clearButtons.forEach((button) => button.addEventListener("click", () => {
   search.value = "";
