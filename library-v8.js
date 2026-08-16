@@ -1,4 +1,5 @@
-const libraryResources = [
+let libraryResources = [];
+onst libraryResources = [
   {
     id: "ws-math-g1-001",
     grade: 1,
@@ -5590,73 +5591,77 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 1800);
 }
 
-function visibleResources() {
-  const query = search.value.trim().toLowerCase();
-  let items = libraryResources.filter((resource) => {
-    const matchesGrade = filterGrade === "all" || resource.grade.toString() === filterGrade.replace("grade-", "");
-    const matchesTier = filterTier === "all" || resource.tier === filterTier;
-    const matchesSubject = filterSubject === "all" || resource.subject === filterSubject;
-    const matchesSaved = !savedOnly || saved.has(resource.id);
-    const searchable = `${resource.title} ${resource.description} ${resource.topic} ${resource.board}`.toLowerCase();
-    
-    return matchesGrade && matchesTier && matchesSubject && matchesSaved && searchable.includes(query);
-  });
+
+async function fetchResources() {
+  const q = search ? search.value.trim() : "";
   
-  if (sort.value === "az") items.sort((a, b) => a.title.localeCompare(b.title));
-  // default to sorting by grade, then title
-  else items.sort((a, b) => a.grade - b.grade || a.title.localeCompare(b.title));
-  
-  return items;
+  // Build query string
+  const params = new URLSearchParams();
+  if (q) params.set("q", q);
+  if (filterGrade !== "all") params.set("grade", filterGrade);
+  if (filterTier !== "all") params.set("tier", filterTier);
+  if (savedOnly) {
+      params.set("savedOnly", "true");
+      params.set("saved", Array.from(saved).join(','));
+  }
+
+  try {
+      if (grid) grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #888;">Loading resources...</div>';
+      
+      const response = await fetch('/api/search?' + params.toString());
+      if (!response.ok) throw new Error("API Error");
+      
+      const data = await response.json();
+      return data;
+  } catch (err) {
+      console.error(err);
+      return { total: 0, results: [] };
+  }
 }
 
-function render() {
-  const items = visibleResources();
+async function render() {
+  const data = await fetchResources();
+  const items = data.results;
   
   if (resultCount) resultCount.textContent = items.length;
   if (empty) empty.hidden = items.length > 0;
   if (grid) grid.hidden = items.length === 0;
   
-  const hasActiveFilters = filterGrade !== "all" || filterTier !== "all" || filterSubject !== "all" || savedOnly || search.value;
+  const hasActiveFilters = filterGrade !== "all" || filterTier !== "all" || savedOnly || (search && search.value);
   const clearBtns = document.querySelectorAll("[data-clear-filters]");
   clearBtns.forEach(btn => btn.hidden = !hasActiveFilters);
   
-  grid.innerHTML = "";
-  grid.style.display = "grid"; // make sure it uses the CSS grid
-  
-  let html = "";
-  items.forEach(resource => {
-      const isSaved = saved.has(resource.id);
-      const hasWorksheet = !!resource.worksheet_url;
-      const hasSolution = !!resource.solution_url;
-      const iconClass = resource.subject.toLowerCase().includes('sci') ? 'icon-sci' : 'icon-math';
-      const iconChar = resource.subject.toLowerCase().includes('sci') ? '&#128300;' : '&#8721;';
+  if (grid) {
+      grid.innerHTML = "";
+      grid.style.display = "grid";
       
-      html += `
-      <article class="dash-card reveal">
-        <div class="dash-card-icon ${iconClass}">${iconChar}</div>
-        <h3>${safeText(resource.title)}</h3>
-        <div class="dash-card-meta">
-          <span>&#128193;</span> ${safeText(resource.subject)}
-        </div>
-        <div class="dash-card-tier">
-          <span>&#9873;</span> Grade ${resource.grade} ${parseInt(resource.grade) <= 5 ? "Foundation" : "Higher"}
-        </div>
-        
-        <div class="dash-card-actions">
-          ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="dash-btn" target="_blank">View Worksheet</a>` : ''}
-          ${hasSolution ? `<a href="${resource.solution_url}" class="dash-btn" target="_blank">View Solution</a>` : ''}
-        </div>
-      </article>`;
-  });
-  
-  grid.innerHTML = html;
-
-  grid.querySelectorAll("[data-save]").forEach((button) => {
-    button.addEventListener("click", () => {
-    });
-  });
+      let html = "";
+      items.forEach(resource => {
+          const isSaved = saved.has(resource.id);
+          const iconClass = resource.subject.toLowerCase().includes('sci') ? 'icon-sci' : 'icon-math';
+          const iconChar = resource.subject.toLowerCase().includes('sci') ? '&#128300;' : '&#8721;';
+          
+          html += `
+          <article class="dash-card reveal is-visible">
+            <div class="dash-card-icon ${iconClass}">${iconChar}</div>
+            <h3>${safeText(resource.title)}</h3>
+            <div class="dash-card-meta">
+              <span>&#128193;</span> ${safeText(resource.subject)}
+            </div>
+            <div class="dash-card-tier">
+              <span>&#9873;</span> Grade ${resource.grade} ${parseInt(resource.grade) <= 5 ? "Foundation" : "Higher"}
+            </div>
+            
+            <div class="dash-card-actions">
+              ${resource.hasWorksheet ? `<a href="/api/resource?id=${resource.id}&type=worksheet" class="dash-btn" target="_blank">View Worksheet</a>` : ''}
+              ${resource.hasSolution ? `<a href="/api/resource?id=${resource.id}&type=solution" class="dash-btn" target="_blank">View Solution</a>` : ''}
+            </div>
+          </article>`;
+      });
+      
+      grid.innerHTML = html;
+  }
 }
-
 function updateActiveFilter(buttons, activeValue, dataAttr) {
   buttons.forEach((button) => {
     const val = button.getAttribute(dataAttr);
@@ -5723,7 +5728,7 @@ document.addEventListener("keydown", (event) => {
 
 // Update total counts
 document.querySelector("[data-total-count]").textContent = libraryResources.length;
-const updateCounts = () => {
+const updateCounts = () => { return; 
   if(document.querySelector("[data-count-for='all']")) document.querySelector("[data-count-for='all']").textContent = libraryResources.length;
   for(let i=1; i<=9; i++) {
     const el = document.querySelector(`[data-count-for='grade-${i}']`);
