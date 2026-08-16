@@ -5611,83 +5611,50 @@ function visibleResources() {
 
 function render() {
   const items = visibleResources();
-  resultCount.textContent = items.length;
-  empty.hidden = items.length > 0;
-  grid.hidden = items.length === 0;
+  
+  if (resultCount) resultCount.textContent = items.length;
+  if (empty) empty.hidden = items.length > 0;
+  if (grid) grid.hidden = items.length === 0;
   
   const hasActiveFilters = filterGrade !== "all" || filterTier !== "all" || filterSubject !== "all" || savedOnly || search.value;
-  document.querySelector("[data-clear-filters]").hidden = !hasActiveFilters;
-  
-  // Group by grade
-  const grouped = {};
-  items.forEach(item => {
-      const g = item.grade;
-      if(!grouped[g]) grouped[g] = [];
-      grouped[g].push(item);
-  });
-  
-  const sortedGrades = Object.keys(grouped).sort((a,b) => parseInt(a) - parseInt(b));
+  const clearBtns = document.querySelectorAll("[data-clear-filters]");
+  clearBtns.forEach(btn => btn.hidden = !hasActiveFilters);
   
   grid.innerHTML = "";
+  grid.style.display = "grid"; // make sure it uses the CSS grid
   
-  grid.style.display = "block"; // override the grid display to stack sections
-  
-  sortedGrades.forEach(g => {
-      const gradeItems = grouped[g];
-      const tierLabel = parseInt(g) <= 5 ? "Foundation" : "Higher";
+  let html = "";
+  items.forEach(resource => {
+      const isSaved = saved.has(resource.id);
+      const hasWorksheet = !!resource.worksheet_url;
+      const hasSolution = !!resource.solution_url;
+      const iconClass = resource.subject.toLowerCase().includes('sci') ? 'icon-sci' : 'icon-math';
+      const iconChar = resource.subject.toLowerCase().includes('sci') ? '&#128300;' : '&#8721;';
       
-      let html = `<div class="grade-section">
-          <h2 class="grade-heading">Grade ${g} <span>${tierLabel}</span></h2>
-          <div class="grade-list">`;
-          
-      gradeItems.forEach(resource => {
-          const isSaved = saved.has(resource.id);
-          const hasWorksheet = !!resource.worksheet_url;
-          const hasSolution = !!resource.solution_url;
-          
-          html += `
-          <div class="library-item-row">
-            <div class="row-info">
-              <h3>${safeText(resource.title)}
-                <button style="border:none;background:none;cursor:pointer;font-size:1.1rem;margin-left:8px;" class="save-button${isSaved ? " is-saved" : ""}" type="button" data-save="${resource.id}" aria-pressed="${isSaved}" aria-label="${isSaved ? "Remove" : "Save"} ${safeText(resource.title)}">${isSaved ? "★" : "☆"}</button>
-              </h3>
-              <p>${safeText(resource.subject)} &bull; ${safeText(resource.board)}</p>
-            </div>
-            <div class="row-actions button-group">
-              ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="button button-outline" target="_blank">Worksheet</a>` : ''}
-              ${hasSolution ? `<a href="${resource.solution_url}" class="button button-outline" target="_blank">Solution</a>` : ''}
-            </div>
-          </div>`;
-      });
-      
-      html += `</div></div>`;
-      grid.innerHTML += html;
+      html += `
+      <article class="dash-card reveal">
+        <div class="dash-card-icon ${iconClass}">${iconChar}</div>
+        <h3>${safeText(resource.title)}</h3>
+        <div class="dash-card-meta">
+          <span>&#128193;</span> ${safeText(resource.subject)}
+        </div>
+        <div class="dash-card-tier">
+          <span>&#9873;</span> Grade ${resource.grade} ${parseInt(resource.grade) <= 5 ? "Foundation" : "Higher"}
+        </div>
+        
+        <div class="dash-card-actions">
+          ${hasWorksheet ? `<a href="${resource.worksheet_url}" class="dash-btn" target="_blank">View Worksheet</a>` : ''}
+          ${hasSolution ? `<a href="${resource.solution_url}" class="dash-btn" target="_blank">View Solution</a>` : ''}
+        </div>
+      </article>`;
   });
+  
+  grid.innerHTML = html;
 
   grid.querySelectorAll("[data-save]").forEach((button) => {
     button.addEventListener("click", () => {
-      const id = button.getAttribute("data-save");
-      if (saved.has(id)) {
-        saved.delete(id);
-        button.setAttribute("aria-pressed", "false");
-        button.classList.remove("is-saved");
-        button.textContent = "☆";
-        showToast("Removed from saved routes");
-      } else {
-        saved.add(id);
-        button.setAttribute("aria-pressed", "true");
-        button.classList.add("is-saved");
-        button.textContent = "★";
-        showToast("Saved to routes");
-      }
-      localStorage.setItem("abirs-academy-saved", JSON.stringify([...saved]));
-      updateSavedUI();
-      if (savedOnly) render();
     });
   });
-  
-  // Attach modal listeners after render
-  
 }
 
 function updateActiveFilter(buttons, activeValue, dataAttr) {
@@ -5757,7 +5724,7 @@ document.addEventListener("keydown", (event) => {
 // Update total counts
 document.querySelector("[data-total-count]").textContent = libraryResources.length;
 const updateCounts = () => {
-  document.querySelector("[data-count-for='all']").textContent = libraryResources.length;
+  if(document.querySelector("[data-count-for='all']")) document.querySelector("[data-count-for='all']").textContent = libraryResources.length;
   for(let i=1; i<=9; i++) {
     const el = document.querySelector(`[data-count-for='grade-${i}']`);
     if(el) el.textContent = libraryResources.filter(r => r.grade === i).length;
@@ -5767,20 +5734,20 @@ updateCounts();
 
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const nav = document.querySelector("[data-nav]");
-menuToggle.addEventListener("click", () => {
+if(menuToggle) menuToggle.addEventListener("click", () => {
   const open = menuToggle.getAttribute("aria-expanded") !== "true";
   menuToggle.setAttribute("aria-expanded", String(open));
   nav.classList.toggle("is-open", open);
   document.body.classList.toggle("menu-open", open);
 });
-nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
+if(nav) nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
   menuToggle.setAttribute("aria-expanded", "false");
   nav.classList.remove("is-open");
   document.body.classList.remove("menu-open");
 }));
 
 const header = document.querySelector("[data-header]");
-const updateHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 12);
+const updateHeader = () => { if(header) header.classList.toggle("is-scrolled", window.scrollY > 12); }
 window.addEventListener("scroll", updateHeader, { passive: true });
 updateHeader();
 
@@ -5791,7 +5758,7 @@ const observer = new IntersectionObserver((entries, revealObserver) => entries.f
   }
 }), { threshold: .12 });
 document.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => observer.observe(item));
-document.querySelector("[data-year]").textContent = new Date().getFullYear();
+if(document.querySelector("[data-year]")) document.querySelector("[data-year]").textContent = new Date().getFullYear();
 
 
 updateSavedUI();
