@@ -149,7 +149,7 @@ await test("PDF Studio fit-to-width calculations ignore resize jitter", () => {
   assertEquals(zoomChanged(0.8, 0.803), true);
 });
 
-await test("PDF Studio preserves active tools while stabilising renders", async () => {
+await test("PDF Studio continuously scrolls lazy-rendered pages without disrupting tools", async () => {
   const html = await Deno.readTextFile(new URL("pdf-studio.html", projectRoot));
   const script = await Deno.readTextFile(new URL("pdf-studio.js", projectRoot));
   const styles = await Deno.readTextFile(new URL("pdf-studio.css", projectRoot));
@@ -158,19 +158,29 @@ await test("PDF Studio preserves active tools while stabilising renders", async 
     assert(script.includes(`${tool}:`));
   }
   const renderSection = script.slice(
-    script.indexOf("async function renderPage()"),
+    script.indexOf("async function renderPageEntry(entry)"),
     script.indexOf("function workspaceAvailableWidth()"),
   );
+  assert(html.includes("data-pages-container"));
+  assert(html.includes("data-current-page"));
+  assert(!html.includes("data-previous-page"));
+  assert(!html.includes("data-next-page"));
+  assert(!html.includes("data-page-input"));
   assert(!renderSection.includes("state.draft = null"));
   assert(!renderSection.includes("state.drawing = false"));
-  assert(script.includes("state.renderedPage === state.page"));
+  assert(script.includes("function renderNearbyPages()"));
+  assert(script.includes("function releaseDistantPages(workspaceRect)"));
+  assert(script.includes('elements.workspace.addEventListener("scroll", scheduleScrollWork'));
+  assert(script.includes("bindPageCanvas(entry)"));
+  assert(script.includes("entry.renderedZoom"));
   assert(script.includes("layoutWidthChanged(lastWorkspaceBoxWidth, boxWidth)"));
   assert(script.includes("getBoundingClientRect().width"));
   assert(script.includes("state.drawing || state.erasing || elements.textDialog.open"));
   assert(script.includes("getCoalescedEvents"));
-  assert(script.includes('addEventListener("lostpointercapture", finishPointer)'));
+  assert(script.includes('addEventListener("lostpointercapture"'));
   assert(script.includes("await documentToSave.save"));
   assert(styles.includes("scrollbar-gutter: stable both-edges"));
+  assert(styles.includes(".pages-container[hidden]"));
 });
 
 await test("static catalogue fallback is complete and does not expose storage URLs", async () => {
@@ -189,12 +199,14 @@ await test("static catalogue fallback is complete and does not expose storage UR
 await test("library uses automatic infinite scrolling with an accessible fallback", async () => {
   const html = await Deno.readTextFile(new URL("library.html", projectRoot));
   const script = await Deno.readTextFile(new URL("library-v8.js", projectRoot));
+  const styles = await Deno.readTextFile(new URL("dashboard.css", projectRoot));
   assert(html.includes("data-infinite-sentinel"));
   assert(html.includes("data-infinite-status"));
   assert(script.includes("new IntersectionObserver"));
   assert(script.includes("rootMargin: \"700px 0px\""));
   assert(script.includes("infiniteScrollObserver.observe(elements.scrollSentinel)"));
   assert(script.includes("if (!(\"IntersectionObserver\" in window)) return"));
+  assert(styles.includes(".library-error[hidden] { display: none; }"));
 });
 
 await test("maintained client mirror matches the live root", async () => {

@@ -102,20 +102,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .icon-button:disabled { opacity: 0.28; cursor: not-allowed; }
 .icon-button:disabled:hover { color: inherit; background: transparent; }
 .page-number { height: 36px; padding: 0 8px; display: flex; align-items: center; gap: 6px; color: var(--studio-muted); font-size: 11px; }
-.page-number input {
-  width: 43px;
-  height: 30px;
-  border: 1px solid var(--studio-line);
-  border-radius: 8px;
-  outline: 0;
-  color: var(--studio-white);
-  background: rgba(0, 0, 0, 0.18);
-  text-align: center;
-  font-size: 12px;
-  font-weight: 800;
-  appearance: textfield;
-}
-.page-number input::-webkit-inner-spin-button { appearance: none; }
+.page-number b { color: var(--studio-white); font-size: 12px; }
 .control-separator { width: 1px; height: 23px; margin: 0 4px; background: var(--studio-line); }
 .zoom-value { min-width: 58px; height: 34px; border: 0; color: var(--studio-muted); background: transparent; cursor: pointer; font-size: 11px; font-weight: 800; }
 .zoom-value:hover { color: var(--studio-lime); }
@@ -212,13 +199,52 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   background-size: 18px 18px;
   scrollbar-color: #53645d #1a2823;
 }
+.pages-container {
+  width: max-content;
+  min-width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: clamp(22px, 3vw, 38px);
+}
+.pages-container[hidden], .workspace-message[hidden] { display: none; }
 .page-stage {
   position: relative;
   width: max-content;
-  margin: 0 auto;
   background: #fff;
   box-shadow: var(--studio-shadow);
   isolation: isolate;
+}
+.page-stage::after {
+  content: "Page " attr(data-page-number);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(16, 37, 31, 0.72);
+  opacity: 0;
+  pointer-events: none;
+  font-size: 10px;
+  font-weight: 800;
+  transition: opacity 150ms ease;
+}
+.page-stage.is-active::after { opacity: 1; }
+.page-stage.has-render-error::before {
+  content: "This page could not be drawn. Scroll away and back to retry.";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  z-index: 4;
+  width: min(320px, calc(100% - 40px));
+  padding: 16px;
+  border-radius: 12px;
+  color: #fff;
+  background: #8b2d2d;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 800;
 }
 .page-stage canvas { display: block; max-width: none; }
 [data-pdf-canvas] { position: relative; z-index: 1; background: #fff; }

@@ -1,5 +1,5 @@
 import * as pdfjsLib from "./vendor/pdf.mjs?v=6.2.108";
-import { calculateFitZoom, clamp, layoutWidthChanged, zoomChanged } from "./pdf-studio-utils.js?v=2";
+import { calculateFitZoom, clamp, layoutWidthChanged, zoomChanged } from "./pdf-studio-utils.js?v=3";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdf.worker.mjs?v=6.2.108", import.meta.url).href;
 
@@ -14,9 +14,7 @@ const storageKey = `abirs-pdf-notes-v1:${resourceId}:${resourceType}`;
 const elements = {
   title: document.querySelector("[data-document-title]"),
   saveStatus: document.querySelector("[data-save-status]"),
-  previousPage: document.querySelector("[data-previous-page]"),
-  nextPage: document.querySelector("[data-next-page]"),
-  pageInput: document.querySelector("[data-page-input]"),
+  currentPage: document.querySelector("[data-current-page]"),
   pageCount: document.querySelector("[data-page-count]"),
   zoomOut: document.querySelector("[data-zoom-out]"),
   zoomIn: document.querySelector("[data-zoom-in]"),
@@ -32,9 +30,7 @@ const elements = {
   error: document.querySelector("[data-pdf-error]"),
   errorDetail: document.querySelector("[data-error-detail]"),
   retry: document.querySelector("[data-pdf-retry]"),
-  stage: document.querySelector("[data-page-stage]"),
-  pdfCanvas: document.querySelector("[data-pdf-canvas]"),
-  annotationCanvas: document.querySelector("[data-annotation-canvas]"),
+  pagesContainer: document.querySelector("[data-pages-container]"),
   toolButtons: [...document.querySelectorAll("[data-tool]")],
   colours: [...document.querySelectorAll("[data-colour]")],
   customColour: document.querySelector("[data-custom-colour]"),
@@ -55,10 +51,7 @@ const elements = {
 const state = {
   pdf: null,
   loadingTask: null,
-  renderTask: null,
-  renderNumber: 0,
-  renderedPage: 0,
-  renderedZoom: 0,
+  pages: [],
   page: 1,
   zoom: 1,
   autoFit: true,
@@ -68,6 +61,8 @@ const state = {
   sizes: { hand: 3, pen: 3, marker: 20, text: 18, eraser: 16 },
   annotations: {},
   draft: null,
+  draftPage: 0,
+  gestureCanvas: null,
   drawing: false,
   erasing: false,
   eraserChanged: false,
@@ -81,6 +76,8 @@ const state = {
 let toastTimer;
 let resizeTimer;
 let annotationFrame;
+let scrollFrame;
+const annotationDrawQueue = new Set();
 let lastWorkspaceBoxWidth = Number.NaN;
 
 function annotationId() {
@@ -174,7 +171,7 @@ function restoreHistory(index) {
   persistAnnotations();
   updateAnnotationSummary();
   updateHistoryButtons();
-  drawAnnotationLayer();
+  drawAllAnnotationLayers();
 }
 
 function updateHistoryButtons() {
@@ -270,9 +267,14 @@ function drawAnnotations(context, annotations, width, height, sizeScale, draft =
   context.restore();
 }
 
-function drawAnnotationLayer() {
-  const canvas = elements.annotationCanvas;
-  if (!canvas.width || !canvas.height) return;
+function pageEntry(pageNumber = state.page) {
+  return state.pages[Number(pageNumber) - 1] || null;
+}
+
+function drawAnnotationLayer(pageNumber = state.page) {
+  const entry = pageEntry(pageNumber);
+  const canvas = entry?.annotationCanvas;
+  if (!canvas || !canvas.width || !canvas.height) return;
   const context = canvas.getContext("2d");
   const ratio = canvas.width / Number.parseFloat(canvas.style.width || canvas.width);
   const width = Number.parseFloat(canvas.style.width);
@@ -280,22 +282,33 @@ function drawAnnotationLayer() {
   context.setTransform(1, 0, 0, 1, 0, 0);
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  drawAnnotations(context, pageAnnotations(), width, height, state.zoom, state.draft);
+  const draft = state.draftPage === Number(pageNumber) ? state.draft : null;
+  drawAnnotations(context, pageAnnotations(pageNumber), width, height, state.zoom, draft);
+}
+
+function drawAllAnnotationLayers() {
+  state.pages.forEach((entry) => drawAnnotationLayer(entry.number));
   updateAnnotationSummary();
 }
 
-function scheduleAnnotationDraw() {
+function scheduleAnnotationDraw(pageNumber = state.draftPage || state.page) {
+  annotationDrawQueue.add(Number(pageNumber));
   if (annotationFrame) return;
   annotationFrame = requestAnimationFrame(() => {
     annotationFrame = null;
-    drawAnnotationLayer();
+    annotationDrawQueue.forEach((number) => drawAnnotationLayer(number));
+    annotationDrawQueue.clear();
+    updateAnnotationSummary();
   });
 }
 
 function setCanvasInteraction() {
   const drawingTool = state.tool !== "hand";
-  elements.annotationCanvas.style.pointerEvents = drawingTool ? "auto" : "none";
-  elements.annotationCanvas.style.cursor = ({ pen: "crosshair", marker: "crosshair", text: "text", eraser: "cell" })[state.tool] || "default";
+  const cursor = ({ pen: "crosshair", marker: "crosshair", text: "text", eraser: "cell" })[state.tool] || "default";
+  state.pages.forEach(({ annotationCanvas }) => {
+    annotationCanvas.style.pointerEvents = drawingTool ? "auto" : "none";
+    annotationCanvas.style.cursor = cursor;
+  });
 }
 
 function setTool(tool) {
@@ -316,74 +329,158 @@ function setTool(tool) {
 
 function updatePageControls() {
   if (!state.pdf) return;
-  elements.pageInput.value = state.page;
-  elements.pageInput.max = state.pdf.numPages;
+  elements.currentPage.textContent = state.page;
   elements.pageCount.textContent = state.pdf.numPages;
-  elements.previousPage.disabled = state.page <= 1;
-  elements.nextPage.disabled = state.page >= state.pdf.numPages;
   elements.zoomValue.textContent = `${Math.round(state.zoom * 100)}%`;
   elements.zoomOut.disabled = state.zoom <= 0.55;
   elements.zoomIn.disabled = state.zoom >= 2.5;
 }
 
-async function renderPage() {
-  if (!state.pdf) return;
-  if (
-    state.renderedPage === state.page
-    && !zoomChanged(state.renderedZoom, state.zoom)
-    && elements.pdfCanvas.width
-  ) {
-    drawAnnotationLayer();
-    updatePageControls();
-    setCanvasInteraction();
+function layoutPage(entry) {
+  const width = entry.baseViewport.width * state.zoom;
+  const height = entry.baseViewport.height * state.zoom;
+  entry.stage.style.width = `${width}px`;
+  entry.stage.style.height = `${height}px`;
+  for (const canvas of [entry.pdfCanvas, entry.annotationCanvas]) {
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+  }
+}
+
+function layoutPages({ preservePosition = false } = {}) {
+  const active = pageEntry();
+  const before = preservePosition && active ? active.stage.getBoundingClientRect().top : 0;
+  state.pages.forEach((entry) => {
+    if (entry.renderTask) {
+      try { entry.renderTask.cancel(); } catch { /* The render already ended. */ }
+    }
+    entry.renderVersion += 1;
+    entry.renderedZoom = 0;
+    layoutPage(entry);
+  });
+  if (preservePosition && active) {
+    const after = active.stage.getBoundingClientRect().top;
+    elements.workspace.scrollTop += after - before;
+  }
+}
+
+async function renderPageEntry(entry) {
+  if (!entry || !state.pdf) return;
+  if (!zoomChanged(entry.renderedZoom, state.zoom) && entry.pdfCanvas.width > 1) {
+    drawAnnotationLayer(entry.number);
     return;
   }
-  const renderNumber = ++state.renderNumber;
-  if (state.renderTask) {
-    try { state.renderTask.cancel(); } catch { /* The previous render already ended. */ }
+  if (entry.renderTask && !zoomChanged(entry.renderingZoom, state.zoom)) return;
+  if (entry.renderTask) {
+    try { entry.renderTask.cancel(); } catch { /* The previous render already ended. */ }
   }
+  const renderVersion = ++entry.renderVersion;
   let currentTask = null;
 
   try {
-    const page = await state.pdf.getPage(state.page);
-    if (renderNumber !== state.renderNumber) return;
-    const viewport = page.getViewport({ scale: state.zoom });
+    const viewport = entry.pdfPage.getViewport({ scale: state.zoom });
     const pixelBudget = 16_000_000;
     const ratio = Math.max(0.75, Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(pixelBudget / (viewport.width * viewport.height))));
 
-    for (const canvas of [elements.pdfCanvas, elements.annotationCanvas]) {
+    for (const canvas of [entry.pdfCanvas, entry.annotationCanvas]) {
       canvas.width = Math.max(1, Math.floor(viewport.width * ratio));
       canvas.height = Math.max(1, Math.floor(viewport.height * ratio));
       canvas.style.width = `${viewport.width}px`;
       canvas.style.height = `${viewport.height}px`;
     }
-    elements.stage.style.width = `${viewport.width}px`;
-    elements.stage.style.height = `${viewport.height}px`;
-    elements.stage.hidden = false;
+    entry.stage.style.width = `${viewport.width}px`;
+    entry.stage.style.height = `${viewport.height}px`;
 
-    const context = elements.pdfCanvas.getContext("2d", { alpha: false });
-    currentTask = page.render({
+    const context = entry.pdfCanvas.getContext("2d", { alpha: false });
+    currentTask = entry.pdfPage.render({
       canvasContext: context,
       viewport,
       transform: ratio === 1 ? null : [ratio, 0, 0, ratio, 0, 0],
       intent: "display",
     });
-    state.renderTask = currentTask;
+    entry.renderTask = currentTask;
+    entry.renderingZoom = state.zoom;
     await currentTask.promise;
-    if (renderNumber !== state.renderNumber) return;
-    state.renderedPage = state.page;
-    state.renderedZoom = state.zoom;
-    elements.loading.hidden = true;
-    drawAnnotationLayer();
-    updatePageControls();
-    setCanvasInteraction();
+    if (renderVersion !== entry.renderVersion) return;
+    entry.renderedZoom = state.zoom;
+    entry.stage.classList.remove("has-render-error");
+    drawAnnotationLayer(entry.number);
   } catch (error) {
     if (error?.name === "RenderingCancelledException") return;
     console.error(error);
-    showError("This page could not be rendered. Try reloading the document.");
+    entry.stage.classList.add("has-render-error");
   } finally {
-    if (state.renderTask === currentTask) state.renderTask = null;
+    if (entry.renderTask === currentTask) {
+      entry.renderTask = null;
+      entry.renderingZoom = 0;
+    }
   }
+}
+
+function releaseDistantPages(workspaceRect) {
+  const releaseDistance = workspaceRect.height * 4;
+  state.pages.forEach((entry) => {
+    const rect = entry.stage.getBoundingClientRect();
+    const farAway = rect.bottom < workspaceRect.top - releaseDistance || rect.top > workspaceRect.bottom + releaseDistance;
+    if (!farAway || entry.number === state.page || entry.pdfCanvas.width <= 1) return;
+    if (entry.renderTask) {
+      try { entry.renderTask.cancel(); } catch { /* The render already ended. */ }
+    }
+    entry.renderVersion += 1;
+    entry.renderedZoom = 0;
+    entry.pdfCanvas.width = 1;
+    entry.pdfCanvas.height = 1;
+    entry.annotationCanvas.width = 1;
+    entry.annotationCanvas.height = 1;
+  });
+}
+
+function renderNearbyPages() {
+  if (!state.pdf || elements.pagesContainer.hidden) return;
+  const workspaceRect = elements.workspace.getBoundingClientRect();
+  const preloadDistance = Math.max(700, workspaceRect.height * 1.35);
+  state.pages.forEach((entry) => {
+    const rect = entry.stage.getBoundingClientRect();
+    if (rect.bottom >= workspaceRect.top - preloadDistance && rect.top <= workspaceRect.bottom + preloadDistance) {
+      renderPageEntry(entry);
+    }
+  });
+  releaseDistantPages(workspaceRect);
+}
+
+function setActivePage(pageNumber) {
+  const nextPage = clamp(Number(pageNumber) || 1, 1, state.pdf?.numPages || 1);
+  if (nextPage === state.page && pageEntry()?.stage.classList.contains("is-active")) return;
+  state.page = nextPage;
+  state.pages.forEach((entry) => entry.stage.classList.toggle("is-active", entry.number === nextPage));
+  updatePageControls();
+  updateAnnotationSummary();
+}
+
+function updateActivePageFromScroll() {
+  if (!state.pages.length) return;
+  const workspaceRect = elements.workspace.getBoundingClientRect();
+  const readingLine = workspaceRect.top + Math.min(260, workspaceRect.height * 0.35);
+  let closest = state.pages[0];
+  let distance = Number.POSITIVE_INFINITY;
+  for (const entry of state.pages) {
+    const rect = entry.stage.getBoundingClientRect();
+    const nextDistance = Math.abs(clamp(readingLine, rect.top, rect.bottom) - readingLine);
+    if (nextDistance < distance) {
+      closest = entry;
+      distance = nextDistance;
+    }
+  }
+  setActivePage(closest.number);
+}
+
+function scheduleScrollWork() {
+  if (scrollFrame) return;
+  scrollFrame = requestAnimationFrame(() => {
+    scrollFrame = null;
+    updateActivePageFromScroll();
+    renderNearbyPages();
+  });
 }
 
 function workspaceAvailableWidth() {
@@ -395,40 +492,81 @@ function workspaceAvailableWidth() {
 }
 
 async function fitToWidth({ availableWidth = workspaceAvailableWidth() } = {}) {
-  if (!state.pdf) return;
-  const page = await state.pdf.getPage(state.page);
-  const base = page.getViewport({ scale: 1 });
-  const nextZoom = calculateFitZoom(availableWidth, base.width);
+  const active = pageEntry();
+  if (!state.pdf || !active) return;
+  const nextZoom = calculateFitZoom(availableWidth, active.baseViewport.width);
   state.autoFit = true;
-  if (!zoomChanged(state.zoom, nextZoom) && state.renderedPage === state.page) {
+  if (!zoomChanged(state.zoom, nextZoom)) {
     updatePageControls();
     return;
   }
   state.zoom = nextZoom;
-  await renderPage();
+  layoutPages({ preservePosition: true });
+  updatePageControls();
+  renderNearbyPages();
 }
 
 async function goToPage(pageNumber) {
   if (!state.pdf) return;
   const nextPage = clamp(Math.round(Number(pageNumber) || state.page), 1, state.pdf.numPages);
-  if (nextPage === state.page) {
-    updatePageControls();
-    return;
-  }
-  state.page = nextPage;
-  updateAnnotationSummary();
-  if (state.autoFit) await fitToWidth();
-  else await renderPage();
-  elements.workspace.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  setActivePage(nextPage);
+  pageEntry(nextPage)?.stage.scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
+  renderPageEntry(pageEntry(nextPage));
 }
 
 function showError(message) {
   elements.loading.hidden = true;
-  elements.stage.hidden = true;
+  elements.pagesContainer.hidden = true;
   elements.error.hidden = false;
   elements.errorDetail.textContent = message;
   elements.download.disabled = true;
   elements.saveStatus.textContent = "PDF unavailable";
+}
+
+function createPageEntry(pdfPage, pageNumber) {
+  const stage = document.createElement("article");
+  stage.className = "page-stage";
+  stage.dataset.pageNumber = String(pageNumber);
+  stage.setAttribute("aria-label", `Page ${pageNumber} of ${state.pdf.numPages}`);
+
+  const pdfCanvas = document.createElement("canvas");
+  pdfCanvas.dataset.pdfCanvas = "";
+  pdfCanvas.setAttribute("aria-label", `PDF page ${pageNumber}`);
+  const annotationCanvas = document.createElement("canvas");
+  annotationCanvas.dataset.annotationCanvas = "";
+  annotationCanvas.dataset.pageNumber = String(pageNumber);
+  annotationCanvas.setAttribute("aria-label", `Annotations for page ${pageNumber}`);
+  stage.append(pdfCanvas, annotationCanvas);
+
+  const entry = {
+    number: pageNumber,
+    pdfPage,
+    baseViewport: pdfPage.getViewport({ scale: 1 }),
+    stage,
+    pdfCanvas,
+    annotationCanvas,
+    renderTask: null,
+    renderVersion: 0,
+    renderedZoom: 0,
+    renderingZoom: 0,
+  };
+  bindPageCanvas(entry);
+  return entry;
+}
+
+async function buildPageEntries() {
+  const fragment = document.createDocumentFragment();
+  state.pages = [];
+  elements.pagesContainer.replaceChildren();
+  for (let pageNumber = 1; pageNumber <= state.pdf.numPages; pageNumber += 1) {
+    const pdfPage = await state.pdf.getPage(pageNumber);
+    const entry = createPageEntry(pdfPage, pageNumber);
+    state.pages.push(entry);
+    fragment.append(entry.stage);
+  }
+  elements.pagesContainer.append(fragment);
+  elements.pageCount.textContent = state.pdf.numPages;
+  setCanvasInteraction();
 }
 
 async function loadDocument() {
@@ -440,13 +578,20 @@ async function loadDocument() {
   elements.error.hidden = true;
   elements.loading.hidden = false;
   elements.loadingDetail.textContent = "Loading the PDF securely...";
-  elements.stage.hidden = true;
+  elements.pagesContainer.hidden = true;
   elements.title.textContent = requestedTitle;
   document.title = `${requestedTitle} | PDF Study Studio`;
 
   if (state.loadingTask) {
     try { await state.loadingTask.destroy(); } catch { /* Ignore cleanup errors. */ }
   }
+  state.pages.forEach((entry) => {
+    if (entry.renderTask) {
+      try { entry.renderTask.cancel(); } catch { /* Ignore cleanup errors. */ }
+    }
+  });
+  state.pages = [];
+  elements.pagesContainer.replaceChildren();
 
   try {
     state.loadingTask = pdfjsLib.getDocument({
@@ -459,19 +604,27 @@ async function loadDocument() {
     };
     state.pdf = await state.loadingTask.promise;
     state.page = 1;
-    state.renderedPage = 0;
-    state.renderedZoom = 0;
+    elements.loadingDetail.textContent = `Preparing ${state.pdf.numPages} pages for continuous reading...`;
+    await buildPageEntries();
     loadSavedAnnotations();
     elements.download.disabled = false;
-    await fitToWidth();
+    const firstPage = pageEntry(1);
+    state.zoom = calculateFitZoom(workspaceAvailableWidth(), firstPage.baseViewport.width);
+    state.autoFit = true;
+    layoutPages();
+    setActivePage(1);
+    elements.pagesContainer.hidden = false;
+    await renderPageEntry(firstPage);
+    elements.loading.hidden = true;
+    renderNearbyPages();
   } catch (error) {
     console.error(error);
     showError("The file may be temporarily unavailable. Please try again in a moment.");
   }
 }
 
-function pointerPosition(event) {
-  const bounds = elements.annotationCanvas.getBoundingClientRect();
+function pointerPosition(event, canvas) {
+  const bounds = canvas.getBoundingClientRect();
   return {
     x: clamp((event.clientX - bounds.left) / bounds.width, 0, 1),
     y: clamp((event.clientY - bounds.top) / bounds.height, 0, 1),
@@ -521,101 +674,110 @@ function annotationHit(annotation, point, width, height) {
   return false;
 }
 
-function eraseAt(point) {
-  const items = pageAnnotations();
+function eraseAt(point, pageNumber, canvas) {
+  const items = pageAnnotations(pageNumber);
   if (!items.length) return;
-  const bounds = elements.annotationCanvas.getBoundingClientRect();
+  const bounds = canvas.getBoundingClientRect();
   for (let index = items.length - 1; index >= 0; index -= 1) {
     if (annotationHit(items[index], point, bounds.width, bounds.height)) {
       items.splice(index, 1);
-      if (!items.length) delete state.annotations[String(state.page)];
+      if (!items.length) delete state.annotations[String(pageNumber)];
       state.eraserChanged = true;
-      scheduleAnnotationDraw();
+      scheduleAnnotationDraw(pageNumber);
       return;
     }
   }
 }
 
-function finishPointer(event) {
+function finishPointer(event, entry) {
   if (state.drawing && state.draft) {
-    const key = String(state.page);
+    const key = String(state.draftPage);
     if (!state.annotations[key]) state.annotations[key] = [];
     state.annotations[key].push(state.draft);
     state.draft = null;
     state.drawing = false;
     commitHistory();
-    drawAnnotationLayer();
+    drawAnnotationLayer(Number(key));
   }
   if (state.erasing) {
     state.erasing = false;
     if (state.eraserChanged) commitHistory();
     state.eraserChanged = false;
   }
-  if (event.pointerId !== undefined && elements.annotationCanvas.hasPointerCapture(event.pointerId)) {
-    elements.annotationCanvas.releasePointerCapture(event.pointerId);
+  const canvas = entry?.annotationCanvas || state.gestureCanvas;
+  if (event.pointerId !== undefined && canvas?.hasPointerCapture(event.pointerId)) {
+    canvas.releasePointerCapture(event.pointerId);
   }
+  state.gestureCanvas = null;
+  state.draftPage = 0;
   if (state.pendingAutoFit && !state.drawing && !state.erasing) {
     state.pendingAutoFit = false;
     fitToWidth();
   }
 }
 
-elements.annotationCanvas.addEventListener("pointerdown", (event) => {
-  if (!event.isPrimary || state.tool === "hand" || (event.pointerType === "mouse" && event.button !== 0)) return;
-  const point = pointerPosition(event);
-  if (state.tool === "text") {
-    event.preventDefault();
-    state.pendingTextPoint = point;
-    elements.textInput.value = "";
-    elements.textDialog.showModal();
-    setTimeout(() => elements.textInput.focus(), 0);
-    return;
-  }
-
-  event.preventDefault();
-  elements.annotationCanvas.setPointerCapture(event.pointerId);
-  if (state.tool === "eraser") {
-    state.erasing = true;
-    state.eraserChanged = false;
-    eraseAt(point);
-    return;
-  }
-
-  state.drawing = true;
-  state.draft = {
-    id: annotationId(),
-    type: state.tool,
-    colour: state.colour,
-    size: state.size,
-    points: [point],
-  };
-  scheduleAnnotationDraw();
-});
-
-elements.annotationCanvas.addEventListener("pointermove", (event) => {
-  if (!event.isPrimary) return;
-  if (state.erasing) {
-    event.preventDefault();
-    pointerSamples(event).forEach((sample) => eraseAt(pointerPosition(sample)));
-    return;
-  }
-  if (!state.drawing || !state.draft) return;
-  event.preventDefault();
-  const bounds = elements.annotationCanvas.getBoundingClientRect();
-  for (const sample of pointerSamples(event)) {
-    if (state.draft.points.length >= 5000) break;
-    const point = pointerPosition(sample);
-    const previous = state.draft.points[state.draft.points.length - 1];
-    if (Math.hypot((point.x - previous.x) * bounds.width, (point.y - previous.y) * bounds.height) >= 1.5) {
-      state.draft.points.push(point);
+function bindPageCanvas(entry) {
+  const canvas = entry.annotationCanvas;
+  canvas.addEventListener("pointerdown", (event) => {
+    if (!event.isPrimary || state.tool === "hand" || (event.pointerType === "mouse" && event.button !== 0)) return;
+    setActivePage(entry.number);
+    const point = pointerPosition(event, canvas);
+    if (state.tool === "text") {
+      event.preventDefault();
+      state.pendingTextPoint = { pageNumber: entry.number, point };
+      elements.textInput.value = "";
+      elements.textDialog.showModal();
+      setTimeout(() => elements.textInput.focus(), 0);
+      return;
     }
-  }
-  scheduleAnnotationDraw();
-});
 
-elements.annotationCanvas.addEventListener("pointerup", finishPointer);
-elements.annotationCanvas.addEventListener("pointercancel", finishPointer);
-elements.annotationCanvas.addEventListener("lostpointercapture", finishPointer);
+    event.preventDefault();
+    state.gestureCanvas = canvas;
+    canvas.setPointerCapture(event.pointerId);
+    if (state.tool === "eraser") {
+      state.erasing = true;
+      state.eraserChanged = false;
+      eraseAt(point, entry.number, canvas);
+      return;
+    }
+
+    state.drawing = true;
+    state.draftPage = entry.number;
+    state.draft = {
+      id: annotationId(),
+      type: state.tool,
+      colour: state.colour,
+      size: state.size,
+      points: [point],
+    };
+    scheduleAnnotationDraw(entry.number);
+  });
+
+  canvas.addEventListener("pointermove", (event) => {
+    if (!event.isPrimary || state.gestureCanvas !== canvas) return;
+    if (state.erasing) {
+      event.preventDefault();
+      pointerSamples(event).forEach((sample) => eraseAt(pointerPosition(sample, canvas), entry.number, canvas));
+      return;
+    }
+    if (!state.drawing || !state.draft || state.draftPage !== entry.number) return;
+    event.preventDefault();
+    const bounds = canvas.getBoundingClientRect();
+    for (const sample of pointerSamples(event)) {
+      if (state.draft.points.length >= 5000) break;
+      const point = pointerPosition(sample, canvas);
+      const previous = state.draft.points[state.draft.points.length - 1];
+      if (Math.hypot((point.x - previous.x) * bounds.width, (point.y - previous.y) * bounds.height) >= 1.5) {
+        state.draft.points.push(point);
+      }
+    }
+    scheduleAnnotationDraw(entry.number);
+  });
+
+  canvas.addEventListener("pointerup", (event) => finishPointer(event, entry));
+  canvas.addEventListener("pointercancel", (event) => finishPointer(event, entry));
+  canvas.addEventListener("lostpointercapture", (event) => finishPointer(event, entry));
+}
 
 elements.toolButtons.forEach((button) => button.addEventListener("click", () => setTool(button.dataset.tool)));
 elements.colours.forEach((button) => {
@@ -646,10 +808,12 @@ elements.textForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const text = elements.textInput.value.trim();
   if (!text || !state.pendingTextPoint) {
+    state.pendingTextPoint = null;
     elements.textDialog.close();
     return;
   }
-  const key = String(state.page);
+  const { pageNumber, point } = state.pendingTextPoint;
+  const key = String(pageNumber);
   if (!state.annotations[key]) state.annotations[key] = [];
   state.annotations[key].push({
     id: annotationId(),
@@ -657,12 +821,12 @@ elements.textForm.addEventListener("submit", (event) => {
     text,
     colour: state.colour,
     size: state.size,
-    ...state.pendingTextPoint,
+    ...point,
   });
   state.pendingTextPoint = null;
   elements.textDialog.close();
   commitHistory();
-  drawAnnotationLayer();
+  drawAnnotationLayer(pageNumber);
   if (state.pendingAutoFit) {
     state.pendingAutoFit = false;
     fitToWidth();
@@ -687,25 +851,20 @@ elements.textDialog.addEventListener("cancel", () => {
   }
 });
 
-elements.previousPage.addEventListener("click", () => goToPage(state.page - 1));
-elements.nextPage.addEventListener("click", () => goToPage(state.page + 1));
-elements.pageInput.addEventListener("change", () => goToPage(elements.pageInput.value));
-elements.pageInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    goToPage(elements.pageInput.value);
-    elements.pageInput.blur();
-  }
-});
-elements.zoomOut.addEventListener("click", () => {
-  state.zoom = clamp(Number((state.zoom - 0.15).toFixed(2)), 0.55, 2.5);
+function applyManualZoom(nextZoom) {
+  if (!state.pdf) return;
+  state.zoom = clamp(Number(nextZoom.toFixed(2)), 0.55, 2.5);
   state.autoFit = false;
-  renderPage();
+  layoutPages({ preservePosition: true });
+  updatePageControls();
+  renderNearbyPages();
+}
+
+elements.zoomOut.addEventListener("click", () => {
+  applyManualZoom(state.zoom - 0.15);
 });
 elements.zoomIn.addEventListener("click", () => {
-  state.zoom = clamp(Number((state.zoom + 0.15).toFixed(2)), 0.55, 2.5);
-  state.autoFit = false;
-  renderPage();
+  applyManualZoom(state.zoom + 0.15);
 });
 elements.fitWidth.addEventListener("click", () => fitToWidth());
 elements.undo.addEventListener("click", () => restoreHistory(state.historyIndex - 1));
@@ -715,14 +874,14 @@ elements.clearPage.addEventListener("click", () => {
   if (!pageAnnotations().length || !window.confirm("Remove every annotation from this page?")) return;
   delete state.annotations[String(state.page)];
   commitHistory();
-  drawAnnotationLayer();
+  drawAnnotationLayer(state.page);
   showToast("Page annotations cleared");
 });
 elements.clearDocument.addEventListener("click", () => {
   if (!totalAnnotations() || !window.confirm("Remove every annotation from this PDF? This cannot be undone after you leave the page.")) return;
   state.annotations = {};
   commitHistory();
-  drawAnnotationLayer();
+  drawAllAnnotationLayers();
   showToast("All annotations cleared");
 });
 
@@ -843,6 +1002,7 @@ async function exportPdf() {
 
 elements.download.addEventListener("click", exportPdf);
 elements.retry.addEventListener("click", loadDocument);
+elements.workspace.addEventListener("scroll", scheduleScrollWork, { passive: true });
 
 document.addEventListener("keydown", (event) => {
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName) || elements.textDialog.open;

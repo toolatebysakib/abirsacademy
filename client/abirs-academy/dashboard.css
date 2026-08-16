@@ -422,6 +422,7 @@ body.dashboard-page {
   color: #7a2929;
   background: #fff0ed;
 }
+.library-error[hidden] { display: none; }
 .library-error span { flex: 1; font-size: 13px; }
 
 .toast {
