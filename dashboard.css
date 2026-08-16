@@ -1,14 +1,14 @@
 /* DASHBOARD REDESIGN CSS */
 
 :root {
-  --dash-bg: #f5f7fa;
-  --dash-sidebar: #ffffff;
-  --dash-text: #2c3e50;
-  --dash-text-light: #7f8c8d;
-  --dash-border: #ecf0f1;
-  --dash-primary: #1abc9c;
-  --dash-card: #ffffff;
-  --dash-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  --dash-bg: #f3efe4;
+  --dash-sidebar: #fffdf8;
+  --dash-text: #10251f;
+  --dash-text-light: #5e6c66;
+  --dash-border: rgba(16, 37, 31, 0.17);
+  --dash-primary: #b6db45;
+  --dash-card: #fffdf8;
+  --dash-shadow: 0 4px 20px rgba(16, 37, 31, 0.08);
 }
 
 body.dashboard-page {
@@ -223,7 +223,7 @@ body.dashboard-page {
 .stat-pill.is-active {
   color: var(--dash-primary);
   border-color: var(--dash-primary);
-  background: rgba(26, 188, 156, 0.05);
+  background: rgba(182, 219, 69, 0.15);
 }
 .stat-pill span {
   background: var(--dash-bg);
