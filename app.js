@@ -1,67 +1,75 @@
 const resources = [
   {
-    title: "GCSE questions by topic",
+    title: "GCSE worksheets by grade",
     category: "topic",
-    tag: "Foundation → Higher",
-    description: "Browse a broad, grade-organised directory of question sets, answers, videos and guides.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/gcse-questions-by-topic"
+    tag: "Grades 1–8",
+    description: "Browse the full collection of grade-organised worksheets and matched solutions.",
+    source: "Abir's Academy",
+    action: "Browse the library",
+    url: "library.html"
   },
   {
-    title: "Search the resource finder",
+    title: "Search the resource library",
     category: "topic",
     tag: "Search tool",
-    description: "Search the Abir's Academy catalogue by topic or approximate GCSE grade.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/resource-finder"
+    description: "Find a topic, keyword, grade or tier without scanning hundreds of cards.",
+    source: "Abir's Academy",
+    action: "Start searching",
+    url: "library.html?focus=search"
   },
   {
     title: "Build a revision pack",
     category: "practice",
-    tag: "Planning tool",
-    description: "Select several topics and organise links into a focused revision route.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/resource-organiser"
+    tag: "Saved resources",
+    description: "Star useful worksheets, keep a focused shortlist and return to it on this device.",
+    source: "Abir's Academy",
+    action: "Open saved resources",
+    url: "library.html?saved=true"
   },
   {
-    title: "Interleaving practice",
+    title: "Foundation practice",
     category: "practice",
-    tag: "Mixed practice",
-    description: "Switch between topics to practise recognising which mathematical method is needed.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/interleaving-resources"
+    tag: "Grades 1–5",
+    description: "Build confidence with focused practice across the full Foundation route.",
+    source: "Abir's Academy",
+    action: "See Foundation work",
+    url: "library.html?tier=Foundation"
   },
   {
-    title: "GCSE past-paper routes",
+    title: "Higher exam practice",
     category: "exam",
-    tag: "Exam prep",
-    description: "Find past-paper routes for Edexcel, AQA, OCR, Eduqas and IGCSE qualifications.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/past-papers"
+    tag: "Grades 6–8",
+    description: "Move into demanding Higher-tier topics with worksheets and worked solutions.",
+    source: "Abir's Academy",
+    action: "See Higher work",
+    url: "library.html?tier=Higher"
   },
   {
-    title: "Practice papers",
+    title: "PDF Study Studio",
     category: "exam",
-    tag: "Timed practice",
-    description: "Open the original publisher page for practice papers and worked solutions.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/practice-papers"
+    tag: "Annotate & download",
+    description: "Write, draw and highlight directly over a worksheet, then download your own copy.",
+    source: "Abir's Academy",
+    action: "Choose a PDF",
+    url: "library.html"
   },
   {
-    title: "Topic quizzes",
+    title: "Worked solutions",
     category: "practice",
-    tag: "Quick check",
-    description: "Use short, self-marking quizzes to check understanding before deeper practice.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/maths-quizzes"
+    tag: "Check your method",
+    description: "Open a matching solution beside most worksheets and learn from every correction.",
+    source: "Abir's Academy",
+    action: "Browse worksheets",
+    url: "library.html"
   },
   {
-    title: "How to use Abir's Academy",
+    title: "One-hour study loop",
     category: "topic",
     tag: "Study guide",
-    description: "Read the creator’s own guidance for combining topic work, past papers and interleaving.",
-    source: "Abir's Academy · Abir's Academy",
-    url: "https://www.abirsacademy.pages.dev/how-to-use-abirsacademy"
+    description: "Use recall, learning, practice and reflection to make one focused hour count.",
+    source: "Abir's Academy",
+    action: "See the study route",
+    url: "#study-plan"
   },
   {
     title: "Desmos graphing calculator",
@@ -69,6 +77,7 @@ const resources = [
     tag: "Interactive tool",
     description: "Explore graphs, transformations and equations with a free interactive calculator.",
     source: "Desmos",
+    action: "Open Desmos",
     url: "https://www.desmos.com/calculator"
   }
 ];
@@ -93,7 +102,9 @@ function renderResources() {
     return inCategory && searchable.includes(query);
   });
 
-  resourceGrid.innerHTML = matches.map((resource) => `
+  resourceGrid.innerHTML = matches.map((resource) => {
+    const external = /^https?:\/\//.test(resource.url);
+    return `
     <article class="resource-card">
       <div class="resource-card-top">
         <span class="resource-tag">${escapeHtml(resource.tag)}</span>
@@ -101,12 +112,13 @@ function renderResources() {
       </div>
       <h3>${escapeHtml(resource.title)}</h3>
       <p>${escapeHtml(resource.description)}</p>
-      <a href="${resource.url}" target="_blank" rel="noopener noreferrer">
-        Open original resource <span class="sr-only">: ${escapeHtml(resource.title)}</span>
+      <a href="${resource.url}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}>
+        ${escapeHtml(resource.action)} <span class="sr-only">: ${escapeHtml(resource.title)}</span>
       </a>
       <span class="resource-source">Source: ${escapeHtml(resource.source)}</span>
     </article>
-  `).join("");
+  `;
+  }).join("");
 
   emptyState.hidden = matches.length !== 0;
 }

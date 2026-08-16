@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Read, annotate and download GCSE maths PDFs in Abir's Academy PDF Study Studio." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#10251f" />
+    <title>PDF Study Studio | Abir's Academy</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="pdf-studio.css?v=1" />
+  </head>
+  <body class="studio-page">
+    <a class="skip-link" href="#pdf-workspace">Skip to PDF</a>
+
+    <header class="studio-header">
+      <div class="studio-identity">
+        <a class="back-link" href="library.html" aria-label="Back to resource library">&larr;</a>
+        <a class="studio-brand" href="index.html" aria-label="Abir's Academy home">A&sup2;</a>
+        <div class="document-name">
+          <strong data-document-title>PDF Study Studio</strong>
+          <span data-save-status>Preparing your workspace...</span>
+        </div>
+      </div>
+
+      <div class="document-controls" aria-label="Document navigation">
+        <button class="icon-button" type="button" data-previous-page aria-label="Previous page" title="Previous page">&larr;</button>
+        <label class="page-number">
+          <span class="sr-only">Current page</span>
+          <input type="number" min="1" value="1" inputmode="numeric" data-page-input />
+          <span>of <b data-page-count>&ndash;</b></span>
+        </label>
+        <button class="icon-button" type="button" data-next-page aria-label="Next page" title="Next page">&rarr;</button>
+        <span class="control-separator" aria-hidden="true"></span>
+        <button class="icon-button" type="button" data-zoom-out aria-label="Zoom out" title="Zoom out">&minus;</button>
+        <button class="zoom-value" type="button" data-fit-width title="Fit page to width"><span data-zoom-value>100%</span></button>
+        <button class="icon-button" type="button" data-zoom-in aria-label="Zoom in" title="Zoom in">&plus;</button>
+      </div>
+
+      <div class="studio-actions">
+        <button class="icon-button" type="button" data-undo aria-label="Undo" title="Undo (Ctrl+Z)" disabled>&#8630;</button>
+        <button class="icon-button" type="button" data-redo aria-label="Redo" title="Redo (Ctrl+Y)" disabled>&#8631;</button>
+        <button class="download-button" type="button" data-download disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14" /></svg>
+          <span data-download-label>Download PDF</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="studio-shell">
+      <aside class="tool-panel" aria-label="Annotation tools">
+        <div class="tool-group" role="group" aria-label="Choose a tool">
+          <button class="tool-button is-active" type="button" data-tool="hand" aria-pressed="true" title="Move and read">
+            <span class="tool-symbol" aria-hidden="true">&#9995;</span><small>Move</small>
+          </button>
+          <button class="tool-button" type="button" data-tool="pen" aria-pressed="false" title="Pen (P)">
+            <span class="tool-symbol tool-pen" aria-hidden="true"></span><small>Pen</small>
+          </button>
+          <button class="tool-button" type="button" data-tool="marker" aria-pressed="false" title="Highlighter (H)">
+            <span class="tool-symbol tool-marker" aria-hidden="true"></span><small>Marker</small>
+          </button>
+          <button class="tool-button" type="button" data-tool="text" aria-pressed="false" title="Add text (T)">
+            <span class="tool-symbol tool-text" aria-hidden="true">T</span><small>Text</small>
+          </button>
+          <button class="tool-button" type="button" data-tool="eraser" aria-pressed="false" title="Eraser (E)">
+            <span class="tool-symbol tool-eraser" aria-hidden="true"></span><small>Erase</small>
+          </button>
+        </div>
+
+        <div class="tool-options">
+          <fieldset class="colour-picker">
+            <legend>Colour</legend>
+            <button type="button" class="colour is-active" data-colour="#153dff" style="--swatch:#153dff" aria-label="Blue" aria-pressed="true"></button>
+            <button type="button" class="colour" data-colour="#e53935" style="--swatch:#e53935" aria-label="Red" aria-pressed="false"></button>
+            <button type="button" class="colour" data-colour="#15965a" style="--swatch:#15965a" aria-label="Green" aria-pressed="false"></button>
+            <button type="button" class="colour" data-colour="#f4c430" style="--swatch:#f4c430" aria-label="Yellow" aria-pressed="false"></button>
+            <label class="custom-colour" title="Choose another colour">
+              <span class="sr-only">Custom colour</span>
+              <input type="color" value="#153dff" data-custom-colour />
+            </label>
+          </fieldset>
+
+          <label class="size-control">
+            <span>Size <b data-size-label>3</b></span>
+            <input type="range" min="1" max="30" value="3" data-tool-size />
+          </label>
+        </div>
+      </aside>
+
+      <main class="pdf-workspace" id="pdf-workspace" data-workspace>
+        <div class="workspace-message" data-loading role="status">
+          <span class="loading-mark" aria-hidden="true">A&sup2;</span>
+          <strong>Opening your study workspace</strong>
+          <p data-loading-detail>Loading the PDF securely...</p>
+        </div>
+
+        <div class="workspace-message workspace-error" data-pdf-error role="alert" hidden>
+          <span aria-hidden="true">!</span>
+          <strong>We could not open this PDF</strong>
+          <p data-error-detail>Please return to the library and try the resource again.</p>
+          <div>
+            <button type="button" data-pdf-retry>Try again</button>
+            <a href="library.html">Back to library</a>
+          </div>
+        </div>
+
+        <div class="page-stage" data-page-stage hidden>
+          <canvas data-pdf-canvas aria-label="PDF page"></canvas>
+          <canvas data-annotation-canvas aria-label="Annotation layer"></canvas>
+        </div>
+      </main>
+
+      <aside class="study-panel" data-study-panel>
+        <div class="study-panel-heading">
+          <span>Study session</span>
+          <strong>Your work stays private</strong>
+          <p>Annotations are autosaved only on this device. They are added to the PDF when you download.</p>
+        </div>
+
+        <div class="annotation-summary">
+          <div><strong data-page-annotation-count>0</strong><span>On this page</span></div>
+          <div><strong data-total-annotation-count>0</strong><span>In this PDF</span></div>
+        </div>
+
+        <div class="study-actions">
+          <button type="button" data-clear-page disabled>Clear this page</button>
+          <button type="button" data-clear-document disabled>Clear all notes</button>
+        </div>
+
+        <div class="study-tips">
+          <strong>Quick controls</strong>
+          <p><kbd>P</kbd> Pen <kbd>H</kbd> Marker <kbd>T</kbd> Text <kbd>E</kbd> Eraser</p>
+          <p><kbd>Ctrl</kbd> + <kbd>Z</kbd> Undo your last change</p>
+        </div>
+      </aside>
+    </div>
+
+    <dialog class="text-dialog" data-text-dialog>
+      <form method="dialog" data-text-form>
+        <div class="dialog-heading">
+          <div><span>Add a note</span><strong>Write on this page</strong></div>
+          <button type="button" data-close-text aria-label="Close">&times;</button>
+        </div>
+        <label>
+          <span>Your text</span>
+          <textarea rows="4" maxlength="500" placeholder="Type a reminder, answer or working step..." data-text-input></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button type="button" data-cancel-text>Cancel</button>
+          <button class="dialog-add" type="submit">Add to page</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="studio-toast" data-studio-toast role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="vendor/pdf-lib.min.js?v=1.17.1" defer></script>
+    <script type="module" src="pdf-studio.js?v=1"></script>
+  </body>
+</html>

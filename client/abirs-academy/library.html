@@ -1,118 +1,139 @@
 <!doctype html>
 <html lang="en-GB">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Browse a clear, searchable GCSE maths resource library organised by goal, level, resource type and exam board." />
-  <meta name="theme-color" content="#10251f" />
-  <title>Resource Library | Abir's Academy</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="library.css" />
-  <link rel="stylesheet" href="dashboard.css" />
-</head>
-<body class="dashboard-page">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Browse searchable GCSE maths worksheets and solutions, then annotate them in Abir's Academy PDF Study Studio."
+    />
+    <meta name="theme-color" content="#10251f" />
+    <title>Resource Library | Abir's Academy</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dashboard.css?v=9" />
+  </head>
+  <body class="dashboard-page">
+    <a class="skip-link" href="#library-content">Skip to resources</a>
 
-  <div class="dashboard-container">
-    <!-- SIDEBAR -->
-    <aside class="dashboard-sidebar">
-      <div class="sidebar-brand">
-        <a href="index.html" aria-label="Abir's Academy home">
-          <span class="brand-mark" aria-hidden="true">A²</span>
-          <span class="brand-name">Abir's <strong>Academy</strong></span>
-        </a>
-      </div>
-      
-      <nav class="sidebar-nav">
-        <p class="sidebar-label">Curriculum</p>
-        <button class="nav-item is-active" data-library-filter="all">
-          <span class="nav-icon">&#8862;</span> All Grades
-        </button>
-        <button class="nav-item" data-library-filter="grade-1">
-          <span class="nav-icon">1</span> Grade 1
-        </button>
-        <button class="nav-item" data-library-filter="grade-2">
-          <span class="nav-icon">2</span> Grade 2
-        </button>
-        <button class="nav-item" data-library-filter="grade-3">
-          <span class="nav-icon">3</span> Grade 3
-        </button>
-        <button class="nav-item" data-library-filter="grade-4">
-          <span class="nav-icon">4</span> Grade 4
-        </button>
-        <button class="nav-item" data-library-filter="grade-5">
-          <span class="nav-icon">5</span> Grade 5
-        </button>
-        <button class="nav-item" data-library-filter="grade-6">
-          <span class="nav-icon">6</span> Grade 6
-        </button>
-        <button class="nav-item" data-library-filter="grade-7">
-          <span class="nav-icon">7</span> Grade 7
-        </button>
-        <button class="nav-item" data-library-filter="grade-8">
-          <span class="nav-icon">8</span> Grade 8
-        </button>
-        <button class="nav-item" data-library-filter="grade-9">
-          <span class="nav-icon">9</span> Grade 9
-        </button>
-        
-        <p class="sidebar-label" style="margin-top:2rem;">My Resources</p>
-        <button class="nav-item" data-saved-filter aria-pressed="false">
-          <span class="nav-icon">&#9733;</span> Saved Routes
-        </button>
-      </nav>
-      
-      <div class="sidebar-footer">
-        <a href="index.html" class="nav-item">
-          <span class="nav-icon">&#8592;</span> Back to Home
-        </a>
-      </div>
-    </aside>
+    <div class="mobile-bar">
+      <a class="sidebar-brand-link" href="index.html" aria-label="Abir's Academy home">
+        <span class="brand-mark" aria-hidden="true">A&sup2;</span>
+        <span class="brand-name">Abir's <strong>Academy</strong></span>
+      </a>
+      <button
+        class="sidebar-toggle"
+        type="button"
+        data-sidebar-toggle
+        aria-expanded="false"
+        aria-controls="library-sidebar"
+      >
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+        <span class="sr-only">Open library filters</span>
+      </button>
+    </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="dashboard-main">
-      <!-- TOP BAR -->
-      <header class="dashboard-header">
-        <div class="search-wrap">
-          <span class="search-icon">&#128269;</span>
-          <input type="search" placeholder="Search topics..." data-library-search />
+    <div class="dashboard-container">
+      <aside class="dashboard-sidebar" id="library-sidebar" data-sidebar>
+        <div class="sidebar-brand">
+          <a class="sidebar-brand-link" href="index.html" aria-label="Abir's Academy home">
+            <span class="brand-mark" aria-hidden="true">A&sup2;</span>
+            <span class="brand-name">Abir's <strong>Academy</strong></span>
+          </a>
         </div>
-        <div class="header-right">
-          <span class="notification-icon">&#128276;</span>
-          
-        </div>
-      </header>
 
-      <!-- CONTENT AREA -->
-      <div class="dashboard-content">
-        <div class="content-header">
-          <div>
-            <h1>Resource Library</h1>
-            <p>All mathematics resources for Edexcel / AQA</p>
+        <nav class="sidebar-nav" aria-label="Resource filters">
+          <p class="sidebar-label">Curriculum</p>
+          <button class="nav-item is-active" type="button" data-library-filter="all">
+            <span class="nav-icon" aria-hidden="true">&boxplus;</span>
+            <span>All grades</span>
+            <small data-grade-count="all"></small>
+          </button>
+          <button class="nav-item" type="button" data-library-filter="grade-1"><span class="nav-icon">1</span><span>Grade 1</span><small data-grade-count="1"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-2"><span class="nav-icon">2</span><span>Grade 2</span><small data-grade-count="2"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-3"><span class="nav-icon">3</span><span>Grade 3</span><small data-grade-count="3"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-4"><span class="nav-icon">4</span><span>Grade 4</span><small data-grade-count="4"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-5"><span class="nav-icon">5</span><span>Grade 5</span><small data-grade-count="5"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-6"><span class="nav-icon">6</span><span>Grade 6</span><small data-grade-count="6"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-7"><span class="nav-icon">7</span><span>Grade 7</span><small data-grade-count="7"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-8"><span class="nav-icon">8</span><span>Grade 8</span><small data-grade-count="8"></small></button>
+          <button class="nav-item" type="button" data-library-filter="grade-9"><span class="nav-icon">9</span><span>Grade 9</span><small data-grade-count="9"></small></button>
+
+          <p class="sidebar-label sidebar-label-spaced">My learning</p>
+          <button class="nav-item" type="button" data-saved-filter aria-pressed="false">
+            <span class="nav-icon" aria-hidden="true">&#9733;</span>
+            <span>Saved resources</span>
+            <small data-saved-count>0</small>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="index.html" class="nav-item"><span class="nav-icon" aria-hidden="true">&larr;</span><span>Back home</span></a>
+        </div>
+      </aside>
+
+      <button class="sidebar-scrim" type="button" data-sidebar-scrim aria-label="Close library filters" tabindex="-1"></button>
+
+      <main class="dashboard-main" id="library-content">
+        <header class="dashboard-header">
+          <label class="search-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.4-4.4m2.4-5.1a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" /></svg>
+            <span class="sr-only">Search resources</span>
+            <input type="search" placeholder="Search a topic, grade or keyword..." autocomplete="off" data-library-search />
+            <kbd aria-hidden="true">/</kbd>
+            <button class="search-clear" type="button" data-search-clear aria-label="Clear search" hidden>&times;</button>
+          </label>
+          <a class="home-link" href="index.html">Home <span aria-hidden="true">&nearr;</span></a>
+        </header>
+
+        <div class="dashboard-content">
+          <div class="content-header">
+            <div>
+              <p class="eyebrow"><span></span> GCSE Mathematics</p>
+              <h1>Resource library</h1>
+              <p data-results-summary aria-live="polite">Loading the catalogue...</p>
+            </div>
+            <button class="button button-quiet" type="button" data-clear-filters hidden>Clear filters</button>
           </div>
-          <button class="button" data-clear-filters hidden>Clear Filters</button>
-        </div>
 
-        <div class="quick-stats">
-          <button class="stat-pill is-active" data-tier-filter="all">All <span data-total-count></span></button>
-          <button class="stat-pill" data-tier-filter="Foundation">Foundation <span>(G1-5)</span></button>
-          <button class="stat-pill" data-tier-filter="Higher">Higher <span>(G5-9)</span></button>
-        </div>
+          <div class="studio-callout">
+            <span class="studio-callout-badge">New</span>
+            <div>
+              <strong>Make every worksheet your own</strong>
+              <p>Open PDF Study Studio to write, highlight, draw, undo, save your progress and download a personalised copy.</p>
+            </div>
+            <span class="studio-callout-icon" aria-hidden="true">A&sup2;</span>
+          </div>
 
-        <div class="library-grid dashboard-grid" data-library-grid>
-          <!-- JS Rendered Cards -->
-        </div>
+          <div class="quick-stats" role="group" aria-label="Filter by tier">
+            <button class="stat-pill is-active" type="button" data-tier-filter="all">All <span data-total-count></span></button>
+            <button class="stat-pill" type="button" data-tier-filter="Foundation">Foundation <span data-tier-count="Foundation">G1-5</span></button>
+            <button class="stat-pill" type="button" data-tier-filter="Higher">Higher <span data-tier-count="Higher">G5-9</span></button>
+          </div>
 
-        <div class="empty-state" data-library-empty hidden>
-          <p>No resources found for this combination.</p>
-          <button class="button button-outline" data-empty-clear>Clear filters</button>
-        </div>
-      </div>
-    </main>
-  </div>
+          <div class="library-error" role="alert" data-library-error hidden>
+            <strong>We could not load the resources.</strong>
+            <span>Please check your connection and try again.</span>
+            <button type="button" data-retry>Try again</button>
+          </div>
 
-  <div class="toast" data-saved-toast aria-live="polite"></div>
-  
-  <script src="library-v8.js" defer></script>
-</body>
+          <div class="library-grid dashboard-grid" data-library-grid aria-busy="true"></div>
+
+          <div class="empty-state" data-library-empty hidden>
+            <span aria-hidden="true">&empty;</span>
+            <h2>No matching resources</h2>
+            <p>Try a broader search or reset the current filters.</p>
+            <button class="button button-quiet" type="button" data-empty-clear>Clear filters</button>
+          </div>
+
+          <div class="load-more-wrap" data-load-more-wrap hidden>
+            <button class="load-more" type="button" data-load-more>Load more resources</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" data-saved-toast role="status" aria-live="polite" aria-atomic="true"></div>
+    <script src="library-v8.js?v=9" defer></script>
+  </body>
 </html>
