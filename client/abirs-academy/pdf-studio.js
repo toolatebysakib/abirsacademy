@@ -1,4 +1,5 @@
 import * as pdfjsLib from "./vendor/pdf.mjs?v=6.2.108";
+import { calculateFitZoom, clamp, layoutWidthChanged, zoomChanged } from "./pdf-studio-utils.js?v=2";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdf.worker.mjs?v=6.2.108", import.meta.url).href;
 
@@ -56,6 +57,8 @@ const state = {
   loadingTask: null,
   renderTask: null,
   renderNumber: 0,
+  renderedPage: 0,
+  renderedZoom: 0,
   page: 1,
   zoom: 1,
   autoFit: true,
@@ -72,13 +75,17 @@ const state = {
   history: [],
   historyIndex: -1,
   exporting: false,
+  pendingAutoFit: false,
 };
 
 let toastTimer;
 let resizeTimer;
+let annotationFrame;
+let lastWorkspaceBoxWidth = Number.NaN;
 
-function clamp(value, minimum, maximum) {
-  return Math.min(maximum, Math.max(minimum, value));
+function annotationId() {
+  if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
+  return `note-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function showToast(message) {
@@ -111,11 +118,11 @@ function sanitiseAnnotations(value) {
       const colour = /^#[0-9a-f]{6}$/i.test(item.colour) ? item.colour : "#153dff";
       const size = clamp(Number(item.size) || 3, 1, 60);
       if (item.type === "text" && validPoint(item) && typeof item.text === "string") {
-        accepted.push({ id: String(item.id || crypto.randomUUID()), type: "text", colour, size, x: item.x, y: item.y, text: item.text.slice(0, 500) });
+        accepted.push({ id: String(item.id || annotationId()), type: "text", colour, size, x: item.x, y: item.y, text: item.text.slice(0, 500) });
       }
       if ((item.type === "pen" || item.type === "marker") && Array.isArray(item.points)) {
         const points = item.points.slice(0, 5000).filter(validPoint).map(({ x, y }) => ({ x, y }));
-        if (points.length) accepted.push({ id: String(item.id || crypto.randomUUID()), type: item.type, colour, size, points });
+        if (points.length) accepted.push({ id: String(item.id || annotationId()), type: item.type, colour, size, points });
       }
     }
     if (accepted.length) clean[page] = accepted;
@@ -247,7 +254,7 @@ function drawStrokeAnnotation(context, annotation, width, height, sizeScale) {
     const next = points[index + 1];
     context.quadraticCurveTo(point.x * width, point.y * height, ((point.x + next.x) / 2) * width, ((point.y + next.y) / 2) * height);
   }
-  const last = points.at(-1);
+  const last = points[points.length - 1];
   context.lineTo(last.x * width, last.y * height);
   context.stroke();
 }
@@ -277,6 +284,14 @@ function drawAnnotationLayer() {
   updateAnnotationSummary();
 }
 
+function scheduleAnnotationDraw() {
+  if (annotationFrame) return;
+  annotationFrame = requestAnimationFrame(() => {
+    annotationFrame = null;
+    drawAnnotationLayer();
+  });
+}
+
 function setCanvasInteraction() {
   const drawingTool = state.tool !== "hand";
   elements.annotationCanvas.style.pointerEvents = drawingTool ? "auto" : "none";
@@ -284,7 +299,7 @@ function setCanvasInteraction() {
 }
 
 function setTool(tool) {
-  if (!state.sizes[tool]) return;
+  if (!Object.prototype.hasOwnProperty.call(state.sizes, tool)) return;
   state.sizes[state.tool] = state.size;
   state.tool = tool;
   state.size = state.sizes[tool];
@@ -313,12 +328,21 @@ function updatePageControls() {
 
 async function renderPage() {
   if (!state.pdf) return;
+  if (
+    state.renderedPage === state.page
+    && !zoomChanged(state.renderedZoom, state.zoom)
+    && elements.pdfCanvas.width
+  ) {
+    drawAnnotationLayer();
+    updatePageControls();
+    setCanvasInteraction();
+    return;
+  }
   const renderNumber = ++state.renderNumber;
   if (state.renderTask) {
     try { state.renderTask.cancel(); } catch { /* The previous render already ended. */ }
   }
-  state.draft = null;
-  state.drawing = false;
+  let currentTask = null;
 
   try {
     const page = await state.pdf.getPage(state.page);
@@ -338,14 +362,17 @@ async function renderPage() {
     elements.stage.hidden = false;
 
     const context = elements.pdfCanvas.getContext("2d", { alpha: false });
-    state.renderTask = page.render({
+    currentTask = page.render({
       canvasContext: context,
       viewport,
       transform: ratio === 1 ? null : [ratio, 0, 0, ratio, 0, 0],
       intent: "display",
     });
-    await state.renderTask.promise;
+    state.renderTask = currentTask;
+    await currentTask.promise;
     if (renderNumber !== state.renderNumber) return;
+    state.renderedPage = state.page;
+    state.renderedZoom = state.zoom;
     elements.loading.hidden = true;
     drawAnnotationLayer();
     updatePageControls();
@@ -354,16 +381,30 @@ async function renderPage() {
     if (error?.name === "RenderingCancelledException") return;
     console.error(error);
     showError("This page could not be rendered. Try reloading the document.");
+  } finally {
+    if (state.renderTask === currentTask) state.renderTask = null;
   }
 }
 
-async function fitToWidth() {
+function workspaceAvailableWidth() {
+  const styles = getComputedStyle(elements.workspace);
+  const horizontalPadding = (Number.parseFloat(styles.paddingLeft) || 0) + (Number.parseFloat(styles.paddingRight) || 0);
+  const hasStableGutter = globalThis.CSS?.supports?.("scrollbar-gutter", "stable") || false;
+  const fallbackGutter = hasStableGutter ? 0 : 18;
+  return Math.max(1, elements.workspace.clientWidth - horizontalPadding - fallbackGutter);
+}
+
+async function fitToWidth({ availableWidth = workspaceAvailableWidth() } = {}) {
   if (!state.pdf) return;
   const page = await state.pdf.getPage(state.page);
   const base = page.getViewport({ scale: 1 });
-  const workspacePadding = window.innerWidth <= 560 ? 30 : 80;
-  state.zoom = clamp((elements.workspace.clientWidth - workspacePadding) / base.width, 0.55, 1.6);
+  const nextZoom = calculateFitZoom(availableWidth, base.width);
   state.autoFit = true;
+  if (!zoomChanged(state.zoom, nextZoom) && state.renderedPage === state.page) {
+    updatePageControls();
+    return;
+  }
+  state.zoom = nextZoom;
   await renderPage();
 }
 
@@ -376,7 +417,8 @@ async function goToPage(pageNumber) {
   }
   state.page = nextPage;
   updateAnnotationSummary();
-  await renderPage();
+  if (state.autoFit) await fitToWidth();
+  else await renderPage();
   elements.workspace.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
@@ -417,6 +459,8 @@ async function loadDocument() {
     };
     state.pdf = await state.loadingTask.promise;
     state.page = 1;
+    state.renderedPage = 0;
+    state.renderedZoom = 0;
     loadSavedAnnotations();
     elements.download.disabled = false;
     await fitToWidth();
@@ -432,6 +476,12 @@ function pointerPosition(event) {
     x: clamp((event.clientX - bounds.left) / bounds.width, 0, 1),
     y: clamp((event.clientY - bounds.top) / bounds.height, 0, 1),
   };
+}
+
+function pointerSamples(event) {
+  if (typeof event.getCoalescedEvents !== "function") return [event];
+  const samples = event.getCoalescedEvents();
+  return samples.length ? samples : [event];
 }
 
 function pointSegmentDistance(point, start, end, width, height) {
@@ -480,7 +530,7 @@ function eraseAt(point) {
       items.splice(index, 1);
       if (!items.length) delete state.annotations[String(state.page)];
       state.eraserChanged = true;
-      drawAnnotationLayer();
+      scheduleAnnotationDraw();
       return;
     }
   }
@@ -504,12 +554,17 @@ function finishPointer(event) {
   if (event.pointerId !== undefined && elements.annotationCanvas.hasPointerCapture(event.pointerId)) {
     elements.annotationCanvas.releasePointerCapture(event.pointerId);
   }
+  if (state.pendingAutoFit && !state.drawing && !state.erasing) {
+    state.pendingAutoFit = false;
+    fitToWidth();
+  }
 }
 
 elements.annotationCanvas.addEventListener("pointerdown", (event) => {
-  if (!event.isPrimary || state.tool === "hand") return;
+  if (!event.isPrimary || state.tool === "hand" || (event.pointerType === "mouse" && event.button !== 0)) return;
   const point = pointerPosition(event);
   if (state.tool === "text") {
+    event.preventDefault();
     state.pendingTextPoint = point;
     elements.textInput.value = "";
     elements.textDialog.showModal();
@@ -528,34 +583,39 @@ elements.annotationCanvas.addEventListener("pointerdown", (event) => {
 
   state.drawing = true;
   state.draft = {
-    id: crypto.randomUUID(),
+    id: annotationId(),
     type: state.tool,
     colour: state.colour,
     size: state.size,
     points: [point],
   };
-  drawAnnotationLayer();
+  scheduleAnnotationDraw();
 });
 
 elements.annotationCanvas.addEventListener("pointermove", (event) => {
   if (!event.isPrimary) return;
-  const point = pointerPosition(event);
   if (state.erasing) {
     event.preventDefault();
-    eraseAt(point);
+    pointerSamples(event).forEach((sample) => eraseAt(pointerPosition(sample)));
     return;
   }
   if (!state.drawing || !state.draft) return;
   event.preventDefault();
-  const previous = state.draft.points.at(-1);
   const bounds = elements.annotationCanvas.getBoundingClientRect();
-  if (Math.hypot((point.x - previous.x) * bounds.width, (point.y - previous.y) * bounds.height) < 1.5) return;
-  state.draft.points.push(point);
-  drawAnnotationLayer();
+  for (const sample of pointerSamples(event)) {
+    if (state.draft.points.length >= 5000) break;
+    const point = pointerPosition(sample);
+    const previous = state.draft.points[state.draft.points.length - 1];
+    if (Math.hypot((point.x - previous.x) * bounds.width, (point.y - previous.y) * bounds.height) >= 1.5) {
+      state.draft.points.push(point);
+    }
+  }
+  scheduleAnnotationDraw();
 });
 
 elements.annotationCanvas.addEventListener("pointerup", finishPointer);
 elements.annotationCanvas.addEventListener("pointercancel", finishPointer);
+elements.annotationCanvas.addEventListener("lostpointercapture", finishPointer);
 
 elements.toolButtons.forEach((button) => button.addEventListener("click", () => setTool(button.dataset.tool)));
 elements.colours.forEach((button) => {
@@ -592,7 +652,7 @@ elements.textForm.addEventListener("submit", (event) => {
   const key = String(state.page);
   if (!state.annotations[key]) state.annotations[key] = [];
   state.annotations[key].push({
-    id: crypto.randomUUID(),
+    id: annotationId(),
     type: "text",
     text,
     colour: state.colour,
@@ -603,15 +663,29 @@ elements.textForm.addEventListener("submit", (event) => {
   elements.textDialog.close();
   commitHistory();
   drawAnnotationLayer();
+  if (state.pendingAutoFit) {
+    state.pendingAutoFit = false;
+    fitToWidth();
+  }
 });
 
 function closeTextDialog() {
   state.pendingTextPoint = null;
   elements.textDialog.close();
+  if (state.pendingAutoFit) {
+    state.pendingAutoFit = false;
+    fitToWidth();
+  }
 }
 elements.closeText.addEventListener("click", closeTextDialog);
 elements.cancelText.addEventListener("click", closeTextDialog);
-elements.textDialog.addEventListener("cancel", () => { state.pendingTextPoint = null; });
+elements.textDialog.addEventListener("cancel", () => {
+  state.pendingTextPoint = null;
+  if (state.pendingAutoFit) {
+    state.pendingAutoFit = false;
+    fitToWidth();
+  }
+});
 
 elements.previousPage.addEventListener("click", () => goToPage(state.page - 1));
 elements.nextPage.addEventListener("click", () => goToPage(state.page + 1));
@@ -633,7 +707,7 @@ elements.zoomIn.addEventListener("click", () => {
   state.autoFit = false;
   renderPage();
 });
-elements.fitWidth.addEventListener("click", fitToWidth);
+elements.fitWidth.addEventListener("click", () => fitToWidth());
 elements.undo.addEventListener("click", () => restoreHistory(state.historyIndex - 1));
 elements.redo.addEventListener("click", () => restoreHistory(state.historyIndex + 1));
 
@@ -722,7 +796,11 @@ async function exportPdf() {
   elements.saveStatus.textContent = "Building your PDF...";
 
   try {
-    const response = await fetch(resourceUrl, { headers: { Accept: "application/pdf" } });
+    const response = await fetch(resourceUrl, {
+      cache: "no-store",
+      credentials: "same-origin",
+      headers: { Accept: "application/pdf" },
+    });
     if (!response.ok) throw new Error(`PDF download returned ${response.status}`);
     const sourceBytes = new Uint8Array(await response.arrayBuffer());
     const annotatedPages = Object.entries(state.annotations).filter(([, items]) => items.length);
@@ -787,11 +865,24 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-new ResizeObserver(() => {
+function handleWorkspaceResize() {
+  const boxWidth = elements.workspace.getBoundingClientRect().width;
+  if (!layoutWidthChanged(lastWorkspaceBoxWidth, boxWidth)) return;
+  lastWorkspaceBoxWidth = boxWidth;
   if (!state.pdf || !state.autoFit) return;
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(fitToWidth, 180);
-}).observe(elements.workspace);
+  resizeTimer = setTimeout(() => {
+    if (!state.pdf || !state.autoFit) return;
+    if (state.drawing || state.erasing || elements.textDialog.open) {
+      state.pendingAutoFit = true;
+      return;
+    }
+    fitToWidth({ availableWidth: workspaceAvailableWidth() });
+  }, 160);
+}
+
+if ("ResizeObserver" in window) new ResizeObserver(handleWorkspaceResize).observe(elements.workspace);
+else window.addEventListener("resize", handleWorkspaceResize, { passive: true });
 
 setTool("hand");
 loadDocument();

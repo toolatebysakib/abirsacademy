@@ -1,6 +1,7 @@
 import { libraryResources } from "../functions/api/data.js";
 import { onRequest as search } from "../functions/api/search.js";
 import { onRequest as resource } from "../functions/api/resource.js";
+import { calculateFitZoom, layoutWidthChanged, zoomChanged } from "../pdf-studio-utils.js";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -138,6 +139,35 @@ await test("PDF resources route through Study Studio and the local proxy", async
   assert(headers.includes("worker-src 'self' blob:"));
 });
 
+await test("PDF Studio fit-to-width calculations ignore resize jitter", () => {
+  assertEquals(calculateFitZoom(800, 1000), 0.8);
+  assertEquals(calculateFitZoom(300, 1000), 0.55);
+  assertEquals(calculateFitZoom(2000, 1000), 1.6);
+  assertEquals(layoutWidthChanged(800, 800.4), false);
+  assertEquals(layoutWidthChanged(800, 801), true);
+  assertEquals(zoomChanged(0.8, 0.801), false);
+  assertEquals(zoomChanged(0.8, 0.803), true);
+});
+
+await test("PDF Studio preserves active tools while stabilising renders", async () => {
+  const html = await Deno.readTextFile(new URL("pdf-studio.html", projectRoot));
+  const script = await Deno.readTextFile(new URL("pdf-studio.js", projectRoot));
+  const styles = await Deno.readTextFile(new URL("pdf-studio.css", projectRoot));
+  for (const tool of ["hand", "pen", "marker", "text", "eraser"]) {
+    assert(html.includes(`data-tool="${tool}"`));
+    assert(script.includes(`${tool}:`));
+  }
+  assert(!script.includes("state.draft = null;\n  state.drawing = false;"));
+  assert(script.includes("state.renderedPage === state.page"));
+  assert(script.includes("layoutWidthChanged(lastWorkspaceBoxWidth, boxWidth)"));
+  assert(script.includes("getBoundingClientRect().width"));
+  assert(script.includes("state.drawing || state.erasing || elements.textDialog.open"));
+  assert(script.includes("getCoalescedEvents"));
+  assert(script.includes('addEventListener("lostpointercapture", finishPointer)'));
+  assert(script.includes("await documentToSave.save"));
+  assert(styles.includes("scrollbar-gutter: stable both-edges"));
+});
+
 await test("static catalogue fallback is complete and does not expose storage URLs", async () => {
   const fallbackText = await Deno.readTextFile(new URL("catalogue.json", projectRoot));
   const fallback = JSON.parse(fallbackText);
@@ -170,7 +200,7 @@ await test("maintained client mirror matches the live root", async () => {
   }
   for (const filename of [
     "app.js", "index.html", "library.html", "library-v8.js", "dashboard.css", "catalogue.json",
-    "pdf-studio.html", "pdf-studio.js", "pdf-studio.css", "_headers",
+    "pdf-studio.html", "pdf-studio.js", "pdf-studio.css", "pdf-studio-utils.js", "_headers",
     "functions/api/data.js", "functions/api/search.js", "functions/api/resource.js",
     "vendor/pdf.mjs", "vendor/pdf.worker.mjs", "vendor/pdf-lib.min.js",
   ]) {

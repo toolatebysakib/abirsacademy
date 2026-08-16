@@ -205,6 +205,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   min-height: 0;
   padding: clamp(22px, 4vw, 54px);
   overflow: auto;
+  scrollbar-gutter: stable both-edges;
   overscroll-behavior: contain;
   background-color: #24322d;
   background-image: radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
@@ -221,7 +222,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .page-stage canvas { display: block; max-width: none; }
 [data-pdf-canvas] { position: relative; z-index: 1; background: #fff; }
-[data-annotation-canvas] { position: absolute; inset: 0; z-index: 2; touch-action: none; }
+[data-annotation-canvas] { position: absolute; inset: 0; z-index: 2; touch-action: none; user-select: none; -webkit-user-select: none; }
 .workspace-message {
   position: absolute;
   inset: 50% auto auto 50%;
